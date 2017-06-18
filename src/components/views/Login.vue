@@ -47,7 +47,7 @@
 
 <script>
   export default {
-    data () {
+    data() {
       return {
         loginForm: {
           username: '',
@@ -56,7 +56,7 @@
       }
     },
     methods: {
-      login () {
+      login() {
         console.log('loginForm values: ' + JSON.stringify(this.loginForm))
       }
     }
