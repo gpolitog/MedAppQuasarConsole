@@ -1,18 +1,9 @@
 <template>
-  <div id="q-app" >
-    <div v-if="getMobileMode">
-      <div  id="android-preview" class="platform-android mat-only">
-        <iframe id="android-iframe" frameborder="0" src="https://quasar-admin.firebaseapp.com/android/#/"></iframe>
-      </div>
-      <div  id="ios-preview" class="platform-ios ios-only">
-        <iframe id="ios-iframe" frameborder="0" src="https://quasar-admin.firebaseapp.com/ios/#/"></iframe>
-      </div>
-    </div>
-    <q-layout v-else>
-      <!-- <toolbar slot="header"></toolbar>
-      <drawer></drawer> -->
+  <div id="q-app">
+    <q-layout>
+      <main-header slot="header"></main-header>
+      <main-nav></main-nav>
       <div class="layout-view">
-        <!-- <content-header></content-header> -->
         <transition name="fade" mode="out-in">
           <router-view></router-view>
         </transition>
@@ -21,9 +12,8 @@
   </div>
 </template>
 <script type="text/javascript">
-  // import toolbar from './components/layout/toolbar/toolbar.vue'
-  // import drawer from './components/layout/drawer/drawer.vue'
-  // import contentHeader from './components/layout/content-header.vue'
+import mainHeader from './components/components/MainHeader.vue'
+  import mainNav from './components/components/MainNav.vue'
   import { mapGetters } from 'vuex'
   export default {
     name: 'app',
@@ -33,13 +23,12 @@
     //   }
     // },
     computed: {
-      ...mapGetters(['getLayoutNeeded', 'getMobileMode'])
+      ...mapGetters(['getLayoutNeeded'])
+    },
+    components: {
+      mainHeader,
+      mainNav
     }
-    // components: {
-    //   toolbar,
-    //   drawer,
-    //   contentHeader
-    // }
   }
 </script>
 

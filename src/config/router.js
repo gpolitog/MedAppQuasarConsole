@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-function load (component) {
+function load(component) {
   return () => System.import(`components/${component}.vue`)
 }
 
@@ -21,7 +21,8 @@ export default new VueRouter({
    */
 
   routes: [
-    { path: '/', component: load('views/Login') }, // Default
-    { path: '*', component: load('Error404') } // Not found
+    { path: '/', component: load('views/Login'), meta: { name: 'Login' } },
+    { path: '/dashboard', component: load('views/Dashboard'), meta: { name: 'Dashboard' } },
+    { path: '*', component: load('Error404') }
   ]
 })

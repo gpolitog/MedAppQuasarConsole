@@ -1,5 +1,4 @@
 <template>
-  <!-- root node required -->
   <div class="login">
     <div class="row card-container justify-center items-center">
       <div class="sm-width-4of5 md-width-3of5 gt-md-width-2of5">
@@ -45,7 +44,8 @@
 }
 </style>
 
-<script>
+<script scope>
+  import { mapMutations } from 'vuex'
   export default {
     data() {
       return {
@@ -56,8 +56,11 @@
       }
     },
     methods: {
+      ...mapMutations(['setIsLoggedIn']),
       login() {
         console.log('loginForm values: ' + JSON.stringify(this.loginForm))
+        this.setIsLoggedIn(true)
+        this.$router.push('/dashboard')
       }
     }
   }
