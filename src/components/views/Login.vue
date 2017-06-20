@@ -1,6 +1,6 @@
 <template>
   <page-content>
-    <div class="sm-width-4of5 md-width-3of5 gt-md-width-2of5">
+    <div class="sm-width-4of5 md-width-2of5 gt-md-width-1of3">
       <div class="card">
         <div class="card-title bg-primary text-white">
           Login
