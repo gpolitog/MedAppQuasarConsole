@@ -11,40 +11,39 @@
     </q-layout>
   </div>
 </template>
-<script type="text/javascript">
-import mainHeader from './components/components/MainHeader.vue'
-  import mainNav from './components/components/MainNav.vue'
-  import { mapGetters } from 'vuex'
-  export default {
-    name: 'app',
-    // data () {
-    //   return {
-    //     backgroundColor: 'whitesmoke'
-    //   }
-    // },
-    computed: {
-      ...mapGetters(['getLayoutNeeded'])
-    },
-    components: {
-      mainHeader,
-      mainNav
-    }
-  }
-</script>
 
 <style>
-
 body {
-    background: url('./assets/console-bg.jpg');
-    -moz-background-size: cover !important;
-    -o-background-size: cover !important;
-    -webkit-background-size: cover !important;
-    background-attachment: fixed !important;
-    background-repeat: no-repeat !important;
-    background-size: cover !important;
-    height: 100%;
-    position: relative !important;
-    margin: 0;
+  background: url('./assets/console-bg.jpg');
+  -moz-background-size: cover !important;
+  -o-background-size: cover !important;
+  -webkit-background-size: cover !important;
+  background-attachment: fixed !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  height: 100%;
+  position: relative !important;
+  margin: 0;
 }
-
 </style>
+
+<script>
+import mainHeader from './components/components/MainHeader.vue'
+import mainNav from './components/components/MainNav.vue'
+import { mapGetters } from 'vuex'
+export default {
+  name: 'app',
+  // data () {
+  //   return {
+  //     backgroundColor: 'whitesmoke'
+  //   }
+  // },
+  computed: {
+    ...mapGetters(['getLayoutNeeded'])
+  },
+  components: {
+    mainHeader,
+    mainNav
+  }
+}
+</script>
