@@ -21,8 +21,10 @@ export default new VueRouter({
    */
 
   routes: [
-    { path: '/', component: load('views/Login'), meta: { name: 'Login' } },
+    { path: '', component: load('views/Login'), meta: { name: 'Login' } },
     { path: '/dashboard', component: load('views/Dashboard'), meta: { name: 'Dashboard' } },
+    { path: '/accounts', component: load('views/Dashboard'), meta: { name: 'Dashboard' } },
+    { path: '/affiliates', component: load('views/Dashboard'), meta: { name: 'Dashboard' } },
     { path: '*', component: load('Error404') }
   ]
 })

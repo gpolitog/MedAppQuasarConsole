@@ -13,11 +13,6 @@
 import { mapGetters } from 'vuex'
 export default {
     name: 'mainHeader',
-    data() {
-        return {
-
-        }
-    },
     computed: {
         ...mapGetters(['getIsLoggedIn']),
         mainNav() {
