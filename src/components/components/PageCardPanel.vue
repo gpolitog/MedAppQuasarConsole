@@ -18,7 +18,7 @@
 <style scoped lang="stylus">
 @import '~src/themes/app.variables.styl';
 .height-90 {
-    height: 90%;
+    height: 80vh;
 }
 
 .card {

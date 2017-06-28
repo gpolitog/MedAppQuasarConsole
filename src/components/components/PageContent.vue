@@ -1,18 +1,15 @@
 <template>
     <div class="pageContent">
-        <div class="row content-container justify-center items-center">
-            <slot></slot>
-        </div>
+        <slot></slot>
     </div>
 </template>
 
 <style scoped>
 .pageContent {
     height: 100%;
-}
-
-.content-container {
-    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>
 
