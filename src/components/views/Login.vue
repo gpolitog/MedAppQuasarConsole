@@ -16,7 +16,7 @@
               <label>Password</label>
             </div>
             <div class="button-container">
-              <button class="primary round" v-on:click.prevent="login()">
+              <button class="primary round" @click.prevent="login()">
                 Login
               </button>
             </div>
