@@ -1,5 +1,5 @@
 <template>
-    <page-content>
+    <page-content :centerAligned="true" :withBackground="true">
         <div class="sm-width-4of5 md-width-3of5 gt-md-width-2of5">
             <div class="card">
                 <div class="card-content bg-light">

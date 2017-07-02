@@ -1,6 +1,6 @@
 <template>
-    <page-content>
-        <page-card-panel>
+    <page-content :centerAligned="true" :withBackground="true">
+        <card-panel>
             <div slot="left-header">
                 <i>group</i> Affiliates
             </div>
@@ -10,7 +10,7 @@
                 </button>
             </div>
     
-            <div slot="body">
+            <div>
                 <q-data-table :data="affiliates" :config="config" :columns="columns" @refresh="refresh">
                     <template slot="selection" scope="selection">
                         <button class="primary clear" @click.prevent="editAffiliate(selection)">
@@ -19,16 +19,17 @@
                     </template>
                 </q-data-table>
             </div>
-        </page-card-panel>
+        </card-panel>
     </page-content>
 </template>
 
 <script>
-import pageCardPanel from '../components/PageCardPanel.vue'
+import cardPanel from '../components/CardPanel.vue'
 import pageContent from '../components/PageContent.vue'
+
 export default {
     components: {
-        pageCardPanel,
+        cardPanel,
         pageContent
     },
     data() {

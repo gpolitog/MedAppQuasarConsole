@@ -1,28 +1,24 @@
 <template>
-  <page-content>
+  <page-content :centerAligned="true">
     <div class="sm-width-4of5 md-width-2of5 gt-md-width-1of3">
-      <div class="card">
-        <div class="card-title bg-primary text-white">
-          Login
-        </div>
-        <div class="card-content bg-light card-force-top-padding">
-          <form>
-            <div class="floating-label">
-              <input required class="full-width" v-model="loginForm.username">
-              <label>Username</label>
-            </div>
-            <div class="floating-label">
-              <input required class="full-width" v-model="loginForm.password">
-              <label>Password</label>
-            </div>
-            <div class="button-container">
-              <button class="primary round" @click.prevent="login()">
-                Login
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
+      <card-panel cardTitle="Login">
+        <form>
+          <div class="floating-label">
+            <input required class="full-width" v-model="loginForm.username">
+            <label>Username</label>
+          </div>
+          <div class="floating-label">
+            <input required class="full-width" v-model="loginForm.password">
+            <label>Password</label>
+          </div>
+          <div class="button-container">
+            <button class="primary round" @click.prevent="login()">
+              Login
+            </button>
+          </div>
+        </form>
+      </card-panel>
+  
     </div>
   </page-content>
 </template>
@@ -36,8 +32,15 @@
 
 <script>
 import { mapMutations } from 'vuex'
+
+import cardPanel from '../components/CardPanel.vue'
 import pageContent from '../components/PageContent.vue'
+
 export default {
+  components: {
+    cardPanel,
+    pageContent
+  },
   data() {
     return {
       loginForm: {
@@ -53,9 +56,6 @@ export default {
       this.setIsLoggedIn(true)
       this.$router.push('/dashboard')
     }
-  },
-  components: {
-    pageContent
   }
 }
 </script>

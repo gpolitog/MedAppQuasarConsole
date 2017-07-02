@@ -1,16 +1,25 @@
 <template>
-    <page-content>
-        <page-card-panel>
-            <div slot="left-header">
-                <i>group</i> Accounts
-            </div>
-            <div slot="right-header">
-                <button class="primary clear" @click.prevent="createAccount()">
-                    <i>add_circle_outline</i>
-                </button>
-            </div>
+    <page-content :centerAligned="false" :withBackground="true">
+        <div class="sm-width-4of5 md-width-4of5 gt-md-width-4of5">
+            <card-panel sectionHeader="Accounts">
+                Here What's App Doc accounts are managed. It involves creation of doctor accounts, accounts details modification and resetting of password.
+                <br>
+                <br> Assistant accounts are created by the doctor using What's App Doc.
+                </span>
+            </card-panel>
     
-            <div slot="body">
+            <card-panel sectionHeader="Create Account">
+                Email provided is the username of the account. Passwords are pregenerated and sent to the email you have provided.
+                <br>
+                <br>
+                <div class="button-container button-centered">
+                    <button class="primary round" @click.prevent="createAccount()">
+                        Create Account
+                    </button>
+                </div>
+            </card-panel>
+    
+            <card-panel sectionHeader="Accounts List">
                 <q-data-table :data="accounts" :config="config" :columns="columns" @refresh="refresh">
                     <template slot="selection" scope="selection">
                         <button class="primary clear" @click.prevent="editAccount(selection)">
@@ -18,26 +27,36 @@
                         </button>
                     </template>
                 </q-data-table>
-            </div>
-        </page-card-panel>
+            </card-panel>
+        </div>
+    
+        <modal ref="createModal" modalHeader="Create Account"></modal>
     </page-content>
 </template>
 
-<style scoped>
-.account-list {
-    margin-top: 20px;
-    height: 500px;
-    overflow-y: scroll;
+<style scoped lang="stylus">
+@import '~src/themes/app.variables.styl';
+
+.button-container {
+    margin: 10px 0;
+}
+
+@media (max-width: $max-width-sm) {
+    .button-centered {
+        text-align: center;
+    }
 }
 </style>
 
 <script>
-import pageCardPanel from '../components/PageCardPanel.vue'
+import cardPanel from '../components/CardPanel.vue'
+import modal from '../components/Modal.vue'
 import pageContent from '../components/PageContent.vue'
 
 export default {
     components: {
-        pageCardPanel,
+        cardPanel,
+        modal,
         pageContent
     },
     data() {
@@ -90,7 +109,7 @@ export default {
     },
     methods: {
         createAccount() {
-            console.log('create account')
+            this.$refs.createModal.open()
         },
         editAccount(account) {
             console.log('edit => ' + JSON.stringify(account));
