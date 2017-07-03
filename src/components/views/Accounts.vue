@@ -29,8 +29,18 @@
                 </q-data-table>
             </card-panel>
         </div>
-    
-        <modal ref="createModal" modalHeader="Create Account"></modal>
+        <modal ref="createModal" modalHeader="Create Account" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true">
+            <form>
+                <div class="floating-label">
+                    <input required class="full-width" v-model="newAccount.email">
+                    <label>Email</label>
+                </div>
+                <div class="floating-label">
+                    <input required class="full-width" v-model="newAccount.noOfClinics">
+                    <label>Number Of Clinics</label>
+                </div>
+            </form>
+        </modal>
     </page-content>
 </template>
 
@@ -104,7 +114,11 @@ export default {
                     label: 'Status',
                     field: 'status'
                 }
-            ]
+            ],
+            newAccount: {
+                email: '',
+                noOfClinics: ''
+            }
         }
     },
     methods: {

@@ -17,15 +17,15 @@
 import { mapGetters, mapMutations } from 'vuex'
 export default {
     name: 'mainNav',
+    computed: {
+        ...mapGetters(['getIsLoggedIn'])
+    },
     methods: {
         ...mapMutations(['setIsLoggedIn']),
         logout() {
             console.log('logout')
             this.setIsLoggedIn(false)
         }
-    },
-    computed: {
-        ...mapGetters(['getIsLoggedIn'])
     }
 }
 </script>

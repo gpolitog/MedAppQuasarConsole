@@ -1,44 +1,117 @@
 <template>
-    <q-modal ref="modal" class="minimized">
-        <div class="row modal-header">
-            <div v-if="modalHeader">
-                {{ modalHeader }}
+    <q-modal ref="modal" class="minimized" :noEscDismiss="closeOnEscape" :noBackdropDismiss="closeOnOutsideClick">
+        <div class="content">
+            <div class="header">
+                <div class="float-left" v-if="modalHeader">
+                    {{ modalHeader }}
+                </div>
+                <div class="float-right pointer" v-if="showCloseButton" @click="$refs.modal.close()">
+                    <i>clear</i>
+                </div>
             </div>
-            <div class="modal-close" @click="$refs.modal.close()">
-                <i>clear</i>
+            <div class="body">
+                <slot>
+                </slot>
+            </div>
+            <div class="row footer">
+                <div class="float-left button-left">
+                    <button class="primary small clear" @click="$refs.modal.close()">
+                        {{ cancelLabel }}
+                    </button>
+                </div>
+                <div class="float-right">
+                    <button class="primary small">
+                        {{ doneLabel }}
+                    </button>
+                </div>
             </div>
         </div>
-        <slot>
-        </slot>
     </q-modal>
 </template>
 
 <style scoped lang="stylus">
 @import '~src/themes/app.variables.styl';
 
-.modal-close {
-    cursor: pointer;
+button {
+    min-width: 80px;
 }
 
-.modal-header {
-    justify-content:space-between;
+.body {
+    padding: 15px 0;
 }
+
+.body-small {
+    min-width: 20vw;
+}
+
+.body-medium {
+    min-width: 40vw;
+}
+
+.body-large {
+    min-width: 80vw;
+}
+
+.content {
+    padding: 20px;
+}
+
+.footer {
+    display:inline-block;
+    width: 100%;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.header {
+    display:inline-block;
+    font-weight: normal;
+    font-size: 15px;
+    width: 100%;
+}
+
+.pointer {
+    cursor: pointer;
+}    
 </style>
 
 <script>
 export default {
     name: 'modal',
-    props: {
-        modalHeader: {
-            type: String
-        }
-    },
     methods: {
         open() {
             this.$refs.modal.open()
         },
         close() {
             this.$refs.modal.close()
+        }
+    },
+    props: {
+        cancelLabel: {
+            type: String,
+            default: 'Cancel'
+        },
+        closeOnEscape: {
+            type: Boolean
+        },
+        closeOnOutsideClick: {
+            type: Boolean
+        },
+        doneLabel: {
+            type: String,
+            default: 'OK'
+        },
+        modalHeader: {
+            type: String
+        },
+        showCloseButton: {
+            type: Boolean
         }
     }
 }
