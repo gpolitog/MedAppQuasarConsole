@@ -14,12 +14,12 @@
                 </slot>
             </div>
             <div class="row footer">
-                <div class="float-left button-left">
+                <div class="auto">
                     <button class="primary small clear" @click="$refs.modal.close()">
                         {{ cancelLabel }}
                     </button>
                 </div>
-                <div class="float-right">
+                <div class="auto">
                     <button class="primary small">
                         {{ doneLabel }}
                     </button>
@@ -57,16 +57,7 @@ button {
 }
 
 .footer {
-    display:inline-block;
-    width: 100%;
-}
-
-.float-left {
-    float: left;
-}
-
-.float-right {
-    float: right;
+    text-align: center;
 }
 
 .header {
