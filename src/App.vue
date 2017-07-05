@@ -12,7 +12,9 @@
   </div>
 </template>
 
-<style>
+<style lang="stylus">
+@import '~src/themes/app.styl';
+
 body {
   background: url('./assets/console-bg.jpg');
   -moz-background-size: cover !important;
@@ -33,11 +35,6 @@ import mainNav from './components/components/MainNav.vue'
 import { mapGetters } from 'vuex'
 export default {
   name: 'app',
-  // data () {
-  //   return {
-  //     backgroundColor: 'whitesmoke'
-  //   }
-  // },
   computed: {
     ...mapGetters(['getLayoutNeeded'])
   },

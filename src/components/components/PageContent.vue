@@ -1,5 +1,5 @@
 <template>
-    <div class="pageContent" v-bind:class="{'center-aligned' : centerAligned, 'with-background' : withBackground}">
+    <div class="pageContent" :class="{'center-aligned' : centerAligned, 'with-background' : withBackground}">
         <div class="pageContentBody">
             <slot></slot>
         </div>

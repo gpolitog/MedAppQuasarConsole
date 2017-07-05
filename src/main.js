@@ -8,10 +8,13 @@ require(`quasar/dist/quasar.${__THEME}.css`)
 
 import Vue from 'vue'
 import Quasar from 'quasar'
+import Vuelidate from 'vuelidate'
+
 import router from './config/router'
 import store from './config/store'
 
 Vue.use(Quasar) // Install Quasar Framework
+Vue.use(Vuelidate)
 
 Quasar.start(() => {
   /* eslint-disable no-new */

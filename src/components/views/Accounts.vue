@@ -33,7 +33,7 @@
             <form>
                 <div class="floating-label">
                     <input required class="full-width" v-model="newAccount.email">
-                    <label>Email</label>
+                    <label class="input-label-error">Email</label>
                 </div>
                 <div class="floating-label">
                     <input required class="full-width" v-model="newAccount.noOfClinics">
@@ -46,10 +46,6 @@
 
 <style scoped lang="stylus">
 @import '~src/themes/app.variables.styl';
-
-.button-container {
-    margin: 10px 0;
-}
 
 @media (max-width: $max-width-sm) {
     .button-centered {
