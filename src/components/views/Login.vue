@@ -3,12 +3,12 @@
     <div class="sm-width-4of5 md-width-2of5 gt-md-width-1of3">
       <card-panel cardTitle="Login">
         <form novalidate>
-          <div class="stacked-label">
+          <div class="floating-label">
             <input required class="full-width" v-model="loginForm.username" @input="$v.loginForm.username.$touch()">
             <label class="error">Username</label>
             <span class="error-msg" v-if="$v.loginForm.username.$error && !$v.loginForm.username.required">Username is required!</span>
           </div>
-          <div class="stacked-label">
+          <div class="floating-label">
             <input required class="full-width" v-model="loginForm.password">
             <label>Password</label>
             <span class="error-msg" v-if="$v.loginForm.password.$error && !$v.loginForm.password.required">Password is required!</span>
@@ -42,8 +42,7 @@ export default {
       loginForm: {
         username: '',
         password: ''
-      },
-      name: ''
+      }
     }
   },
   methods: {
