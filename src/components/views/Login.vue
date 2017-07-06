@@ -4,12 +4,12 @@
       <card-panel cardTitle="Login">
         <form novalidate>
           <div class="floating-label">
-            <input required class="full-width" v-model="loginForm.username" @input="$v.loginForm.username.$touch()">
+            <input class="full-width" required v-model="loginForm.username" @input="$v.loginForm.username.$touch()">
             <label class="error">Username</label>
             <span class="error-msg" v-if="$v.loginForm.username.$error && !$v.loginForm.username.required">Username is required!</span>
           </div>
           <div class="floating-label">
-            <input required class="full-width" v-model="loginForm.password">
+            <input type="password" class="full-width" required v-model="loginForm.password">
             <label>Password</label>
             <span class="error-msg" v-if="$v.loginForm.password.$error && !$v.loginForm.password.required">Password is required!</span>
           </div>
@@ -27,10 +27,14 @@
 
 <script>
 import { mapMutations } from 'vuex'
-import { required, minLength } from 'vuelidate/lib/validators'
+import { required } from 'vuelidate/lib/validators'
 
 import cardPanel from '../components/CardPanel.vue'
 import pageContent from '../components/PageContent.vue'
+
+import { HttpService } from '../../config/http'
+
+import { CONFIG } from '../../config/config'
 
 export default {
   components: {
@@ -39,6 +43,7 @@ export default {
   },
   data: () => {
     return {
+      http: new HttpService(),
       loginForm: {
         username: '',
         password: ''
@@ -50,9 +55,15 @@ export default {
     login() {
       this.$v.$touch();
       if (!this.$v.loginForm.$error) {
-        console.log('loginForm values: ' + JSON.stringify(this.loginForm))
-        this.setIsLoggedIn(true)
-        this.$router.push('/dashboard')
+        this.http.post(CONFIG.API.authenticate, this.loginForm).then(response => {
+          if (response) {
+            console.log(response);
+            this.setIsLoggedIn(true)
+            this.$router.push('/dashboard')
+          }
+        }).catch(e => {
+          console.error(e);
+        })
       }
     }
   },
