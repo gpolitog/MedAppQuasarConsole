@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Loading, LocalStorage } from 'quasar'
+import { Dialog, Loading, LocalStorage } from 'quasar'
 
 const HTTP = axios.create({
     baseURL: `http://localhost:8080/MedAppWS`
@@ -41,6 +41,7 @@ export class HttpService {
             }).catch(e => {
                 reject(Error(e))
                 Loading.hide()
+                this.errorHandler(e)
             })
         })
     }
@@ -65,6 +66,7 @@ export class HttpService {
             }).catch(e => {
                 reject(Error(e))
                 Loading.hide()
+                this.errorHandler(e)
             })
         })
     }
@@ -78,6 +80,8 @@ export class HttpService {
                 resolve(response)
                 Loading.hide()
             }).catch(e => {
+                console.log(e)
+                this.errorHandler(e)
                 reject(Error(e))
                 Loading.hide()
             })
@@ -95,7 +99,17 @@ export class HttpService {
             }).catch(e => {
                 reject(Error(e))
                 Loading.hide()
+                this.errorHandler(e)
             })
+        })
+    }
+
+    errorHandler(e) {
+        Dialog.create({
+            message: e,
+            buttons: [
+                'OK'
+            ]
         })
     }
 }

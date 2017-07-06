@@ -61,8 +61,6 @@ export default {
             this.setIsLoggedIn(true)
             this.$router.push('/dashboard')
           }
-        }).catch(e => {
-          console.error(e);
         })
       }
     }
