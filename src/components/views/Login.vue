@@ -28,6 +28,7 @@
 <script>
 import { mapMutations } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
+import { Loading } from 'quasar'
 
 import cardPanel from '../components/CardPanel.vue'
 import pageContent from '../components/PageContent.vue'
@@ -55,12 +56,13 @@ export default {
     login() {
       this.$v.$touch();
       if (!this.$v.loginForm.$error) {
+        Loading.show()
         this.http.post(CONFIG.API.authenticate, this.loginForm).then(response => {
           if (response) {
-            console.log(response);
             this.setIsLoggedIn(true)
             this.$router.push('/dashboard')
           }
+          Loading.hide()
         })
       }
     }

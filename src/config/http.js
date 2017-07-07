@@ -6,6 +6,47 @@ const HTTP = axios.create({
     // baseURL: `https://dqmedapp.herokuapp.com`
 })
 
+let requestSuccessHandler = config => {
+    return config
+}
+
+// let requestSuccessWithLoaderHandler = config => {
+//     Loading.show()
+//     return config
+// }
+
+let requestErrorHandler = error => {
+    Loading.hide()
+    return Promise.reject(error)
+}
+
+let responseSuccessHandler = response => {
+    Loading.hide()
+    if (response && response.data && response.data.status) {
+        return response.data
+    } else {
+        dialogHandler(response && response.data ? response.data.errorDescription : `Something went wrong...`)
+    }
+}
+
+let responseErrorHandler = error => {
+    Loading.hide()
+    dialogHandler(error.message)
+    return Promise.reject(error)
+}
+
+let dialogHandler = errorMessage => {
+    Dialog.create({
+        message: errorMessage,
+        buttons: [
+            'OK'
+        ]
+    })
+}
+
+HTTP.interceptors.request.use(requestSuccessHandler, requestErrorHandler)
+HTTP.interceptors.response.use(responseSuccessHandler, responseErrorHandler)
+
 export class HttpService {
 
     _token = ''
@@ -32,18 +73,7 @@ export class HttpService {
         }
 
         this.setAuthorizationHeader()
-        Loading.show()
-
-        return new Promise((resolve, reject) => {
-            HTTP.get(url + parameter).then(response => {
-                resolve(response)
-                Loading.hide()
-            }).catch(e => {
-                reject(Error(e))
-                Loading.hide()
-                this.errorHandler(e)
-            })
-        })
+        return HTTP.get(url + parameter)
     }
 
     delete(url, parameters) {
@@ -57,51 +87,17 @@ export class HttpService {
         }
 
         this.setAuthorizationHeader()
-        Loading.show()
-
-        return new Promise((resolve, reject) => {
-            HTTP.delete(url + parameter).then(response => {
-                resolve(response)
-                Loading.hide()
-            }).catch(e => {
-                reject(Error(e))
-                Loading.hide()
-                this.errorHandler(e)
-            })
-        })
+        return HTTP.delete(url + parameter)
     }
 
     post(url, parameter) {
         this.setAuthorizationHeader()
-        Loading.show()
-
-        return new Promise((resolve, reject) => {
-            HTTP.post(url, parameter).then(response => {
-                resolve(response)
-                Loading.hide()
-            }).catch(e => {
-                console.log(e)
-                this.errorHandler(e)
-                reject(Error(e))
-                Loading.hide()
-            })
-        })
+        return HTTP.post(url, parameter)
     }
 
     put(url, parameter) {
         this.setAuthorizationHeader()
-        Loading.show()
-
-        return new Promise((resolve, reject) => {
-            HTTP.put(url, parameter).then(response => {
-                resolve(response)
-                Loading.hide()
-            }).catch(e => {
-                reject(Error(e))
-                Loading.hide()
-                this.errorHandler(e)
-            })
-        })
+        return HTTP.put(url, parameter)
     }
 
     errorHandler(e) {
