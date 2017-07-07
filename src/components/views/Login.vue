@@ -33,9 +33,8 @@ import { Loading } from 'quasar'
 import cardPanel from '../components/CardPanel.vue'
 import pageContent from '../components/PageContent.vue'
 
-import { HttpService } from '../../config/http'
-
-import { CONFIG } from '../../config/config'
+import CONFIG from '../../config/config'
+import HTTP from '../../utils/http'
 
 export default {
   components: {
@@ -44,7 +43,6 @@ export default {
   },
   data: () => {
     return {
-      http: new HttpService(),
       loginForm: {
         username: '',
         password: ''
@@ -57,7 +55,7 @@ export default {
       this.$v.$touch();
       if (!this.$v.loginForm.$error) {
         Loading.show()
-        this.http.post(CONFIG.API.authenticate, this.loginForm).then(response => {
+        HTTP.post(CONFIG.API.authenticate, this.loginForm).then(response => {
           if (response) {
             this.setIsLoggedIn(true)
             this.$router.push('/dashboard')

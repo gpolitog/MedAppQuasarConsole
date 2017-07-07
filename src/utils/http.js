@@ -1,5 +1,8 @@
 import axios from 'axios';
-import { Dialog, Loading, LocalStorage } from 'quasar'
+import { Dialog, Loading } from 'quasar'
+
+import config from '../config/config'
+import storage from './storage'
 
 const HTTP = axios.create({
     baseURL: `http://localhost:8080/MedAppWS`
@@ -47,13 +50,14 @@ let dialogHandler = errorMessage => {
 HTTP.interceptors.request.use(requestSuccessHandler, requestErrorHandler)
 HTTP.interceptors.response.use(responseSuccessHandler, responseErrorHandler)
 
-export class HttpService {
+class HttpService {
 
     _token = ''
 
     get token() {
         if (!this._token) {
-            this._token = LocalStorage.get.item('accessToken');
+            // this._token = LocalStorage.get.item(CONFIG.STORAGE.token);
+            this._token = storage.get(config.STORAGE.token)
         }
         return this._token;
     }
@@ -109,3 +113,6 @@ export class HttpService {
         })
     }
 }
+
+export default new HttpService()
+
