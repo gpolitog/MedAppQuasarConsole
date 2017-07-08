@@ -1,25 +1,10 @@
 <template>
     <page-content :centerAligned="true" :withBackground="true">
-        <card-panel>
-            <div slot="left-header">
-                <i>group</i> Affiliates
-            </div>
-            <div slot="right-header">
-                <button class="primary clear" @click.prevent="createAffiliate()">
-                    <i>add_circle_outline</i>
-                </button>
-            </div>
-    
-            <div>
-                <q-data-table :data="affiliates" :config="config" :columns="columns" @refresh="refresh">
-                    <template slot="selection" scope="selection">
-                        <button class="primary clear" @click.prevent="editAffiliate(selection)">
-                            <i>edit</i>
-                        </button>
-                    </template>
-                </q-data-table>
-            </div>
-        </card-panel>
+        <div class="sm-width-4of5 md-width-4of5 gt-md-width-4of5">
+            <card-panel sectionHeader="Affiliates">
+                <br>
+            </card-panel>
+        </div>
     </page-content>
 </template>
 
