@@ -35,6 +35,7 @@ import pageContent from '../components/PageContent.vue'
 
 import CONFIG from '../../config/config'
 import HTTP from '../../utils/http'
+import STORAGE from '../../utils/storage'
 
 export default {
   components: {
@@ -57,7 +58,9 @@ export default {
         Loading.show()
         HTTP.post(CONFIG.API.authenticate, this.loginForm).then(response => {
           if (response) {
-            this.setIsLoggedIn(true)
+            // this.setIsLoggedIn(true)
+            STORAGE.put(CONFIG.STORAGE.token, response.result.token)
+            this.$store.dispatch('loggedIn', true)
             this.$router.push('/dashboard')
           }
           Loading.hide()

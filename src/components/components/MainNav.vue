@@ -14,17 +14,18 @@
 </template>
 
 <script type="text/javascript">
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters } from 'vuex'
+import STORAGE from '../../utils/storage'
+
 export default {
     name: 'mainNav',
     computed: {
         ...mapGetters(['getIsLoggedIn'])
     },
     methods: {
-        ...mapMutations(['setIsLoggedIn']),
         logout() {
-            console.log('logout')
-            this.setIsLoggedIn(false)
+            this.$store.dispatch('loggedIn', false)
+            STORAGE.clear()
         }
     }
 }

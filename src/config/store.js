@@ -9,7 +9,14 @@ let state = {
 
 let mutations = {
   setIsLoggedIn(state, value) {
-    state.isLoggedIn = value
+    // state.isLoggedIn = value
+    Vue.set(state, 'isLoggedIn', value)
+  }
+}
+
+let actions = {
+  loggedIn(context, value) {
+    context.commit('setIsLoggedIn', value)
   }
 }
 
@@ -19,8 +26,11 @@ let getters = {
   }
 }
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   state,
   mutations,
+  actions,
   getters
 })
+
+export default store

@@ -13,8 +13,24 @@ import Vuelidate from 'vuelidate'
 import router from './config/router'
 import store from './config/store'
 
-Vue.use(Quasar) // Install Quasar Framework
+import UTILS from './utils/utils'
+
+Vue.use(Quasar)
 Vue.use(Vuelidate)
+
+// nav guard
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth) {
+    if (UTILS.isLoggedIn()) {
+      store.dispatch('loggedIn', true)
+      next()
+    } else {
+      next('/login')
+    }
+  } else {
+    next()
+  }
+})
 
 Quasar.start(() => {
   /* eslint-disable no-new */
