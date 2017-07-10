@@ -13,7 +13,7 @@
                 <br>
                 <br>
                 <div class="button-container button-centered">
-                    <button class="primary round" @click.prevent="createAccount()">
+                    <button class="primary round" @click.prevent="openCreateAccountModal()">
                         Create Account
                     </button>
                 </div>
@@ -29,14 +29,14 @@
                 </q-data-table>
             </card-panel>
         </div>
-        <modal ref="createModal" modalHeader="Create Account" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true">
+        <modal ref="createModal" modalHeader="Create Account" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onExit="closeCreateAccountModal()" @onCancel="closeCreateAccountModal()" @onSubmit="createAccount()" :disableButtons="isProcessing">
             <form>
-                <div class="floating-label">
-                    <input required class="full-width" v-model="newAccount.email">
+                <div class="stacked-label">
+                    <input required class="full-width" :disabled="isProcessing" v-model="newAccount.email">
                     <label class="input-label-error">Email</label>
                 </div>
-                <div class="floating-label">
-                    <input required class="full-width" v-model="newAccount.noOfClinics">
+                <div class="stacked-label">
+                    <input type="number" required class="full-width" :disabled="isProcessing" v-model="newAccount.noOfClinics">
                     <label>Number Of Clinics</label>
                 </div>
             </form>
@@ -111,6 +111,7 @@ export default {
                     field: 'status'
                 }
             ],
+            isProcessing: false,
             newAccount: {
                 email: '',
                 noOfClinics: ''
@@ -119,7 +120,14 @@ export default {
     },
     methods: {
         createAccount() {
+            console.log('createAccount')
+            this.isProcessing = true
+        },
+        openCreateAccountModal() {
             this.$refs.createModal.open()
+        },
+        closeCreateAccountModal() {
+            console.log('closeCreateAccountModal')
         },
         editAccount(account) {
             console.log('edit => ' + JSON.stringify(account));

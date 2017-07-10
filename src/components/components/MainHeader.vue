@@ -4,7 +4,7 @@
             <i>menu</i>
         </button>
         <q-toolbar-title :padding="1">
-            What's App Doc Admin Console
+            Admin Console
         </q-toolbar-title>
     </div>
 </template>

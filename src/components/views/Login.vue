@@ -3,12 +3,12 @@
     <div class="sm-width-4of5 md-width-2of5 gt-md-width-1of3">
       <card-panel cardTitle="Login">
         <form novalidate>
-          <div class="floating-label">
+          <div class="stacked-label">
             <input class="full-width" required v-model="loginForm.username" @input="$v.loginForm.username.$touch()">
             <label class="error">Username</label>
             <span class="error-msg" v-if="$v.loginForm.username.$error && !$v.loginForm.username.required">Username is required!</span>
           </div>
-          <div class="floating-label">
+          <div class="stacked-label">
             <input type="password" class="full-width" required v-model="loginForm.password">
             <label>Password</label>
             <span class="error-msg" v-if="$v.loginForm.password.$error && !$v.loginForm.password.required">Password is required!</span>
@@ -51,14 +51,12 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['setIsLoggedIn']),
     login() {
       this.$v.$touch();
       if (!this.$v.loginForm.$error) {
         Loading.show()
         HTTP.post(CONFIG.API.authenticate, this.loginForm).then(response => {
           if (response) {
-            // this.setIsLoggedIn(true)
             STORAGE.put(CONFIG.STORAGE.token, response.result.token)
             this.$store.dispatch('loggedIn', true)
             this.$router.push('/dashboard')

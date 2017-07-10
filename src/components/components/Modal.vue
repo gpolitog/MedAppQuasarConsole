@@ -5,7 +5,7 @@
                 <div class="float-left" v-if="modalHeader">
                     {{ modalHeader }}
                 </div>
-                <div class="float-right pointer" v-if="showCloseButton" @click="$refs.modal.close()">
+                <div class="float-right pointer" :disabled="disableButtons" v-if="showCloseButton" @click="exit()">
                     <i>clear</i>
                 </div>
             </div>
@@ -15,12 +15,12 @@
             </div>
             <div class="row footer">
                 <div class="auto">
-                    <button class="primary small clear" @click="$refs.modal.close()">
+                    <button class="primary small clear" :disabled="disableButtons" @click="cancel() ">
                         {{ cancelLabel }}
                     </button>
                 </div>
-                <div class="auto">
-                    <button class="primary small">
+                <div class="auto ">
+                    <button class="primary small " :disabled="disableButtons" @click="submit() ">
                         {{ doneLabel }}
                     </button>
                 </div>
@@ -29,9 +29,7 @@
     </q-modal>
 </template>
 
-<style scoped lang="stylus">
-@import '~src/themes/app.variables.styl';
-
+<style scoped>
 button {
     min-width: 80px;
 }
@@ -61,7 +59,7 @@ button {
 }
 
 .header {
-    display:inline-block;
+    display: inline-block;
     font-weight: normal;
     font-size: 15px;
     width: 100%;
@@ -69,7 +67,7 @@ button {
 
 .pointer {
     cursor: pointer;
-}    
+}
 </style>
 
 <script>
@@ -81,12 +79,23 @@ export default {
         },
         close() {
             this.$refs.modal.close()
+        },
+        submit() {
+            this.$emit('onSubmit')
+        },
+        cancel() {
+            this.$emit('onCancel')
+            this.$refs.modal.close()
+        },
+        exit() {
+            this.$emit('onExit')
+            this.$refs.modal.close()
         }
     },
     props: {
         cancelLabel: {
-            type: String,
-            default: 'Cancel'
+            default: 'Cancel',
+            type: String
         },
         closeOnEscape: {
             type: Boolean
@@ -94,9 +103,13 @@ export default {
         closeOnOutsideClick: {
             type: Boolean
         },
+        disableButtons: {
+            default: false,
+            type: Boolean
+        },
         doneLabel: {
-            type: String,
-            default: 'OK'
+            default: 'OK',
+            type: String
         },
         modalHeader: {
             type: String
