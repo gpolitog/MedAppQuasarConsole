@@ -6,8 +6,8 @@ import { DialogService } from './dialog-service'
 import STORAGE from './storage'
 
 const HTTP = axios.create({
-    // baseURL: `http://localhost:8080/MedAppWS`
-    baseURL: `https://dqmedapp.herokuapp.com`
+    baseURL: `http://localhost:8080/MedAppWS`
+    // baseURL: `https://dqmedapp.herokuapp.com`
 })
 
 let requestSuccessHandler = config => {
