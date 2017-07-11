@@ -25,6 +25,12 @@
   </page-content>
 </template>
 
+<style scope>
+form {
+  margin-top: 10px;
+}
+</style>
+
 <script>
 import { mapMutations } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
@@ -52,7 +58,7 @@ export default {
   },
   methods: {
     login() {
-      this.$v.$touch();
+      this.$v.loginForm.$touch();
       if (!this.$v.loginForm.$error) {
         Loading.show()
         HTTP.post(CONFIG.API.authenticate, this.loginForm).then(response => {

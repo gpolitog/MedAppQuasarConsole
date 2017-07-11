@@ -1,8 +1,9 @@
 import axios from 'axios';
-import { Dialog, Loading } from 'quasar'
+// import { Loading } from 'quasar'
 
-import config from '../config/config'
-import storage from './storage'
+import CONFIG from '../config/config'
+import { DialogService } from './dialog-service'
+import STORAGE from './storage'
 
 const HTTP = axios.create({
     baseURL: `http://localhost:8080/MedAppWS`
@@ -19,12 +20,12 @@ let requestSuccessHandler = config => {
 // }
 
 let requestErrorHandler = error => {
-    Loading.hide()
+    // Loading.hide()
     return Promise.reject(error)
 }
 
 let responseSuccessHandler = response => {
-    Loading.hide()
+    // Loading.hide()
     if (response && response.data && response.data.status) {
         return response.data
     } else {
@@ -33,20 +34,14 @@ let responseSuccessHandler = response => {
 }
 
 let responseErrorHandler = error => {
-    Loading.hide()
+    // Loading.hide()
     dialogHandler(error.message)
     return Promise.reject(error)
 }
 
 let dialogHandler = errorMessage => {
-    Dialog.create({
-        message: errorMessage,
-        buttons: [
-            'OK'
-        ],
-        noBackdropDismiss: true,
-        noEscDismiss: true
-    })
+    const dialogService = new DialogService(errorMessage)
+    dialogService.pop()
 }
 
 HTTP.interceptors.request.use(requestSuccessHandler, requestErrorHandler)
@@ -58,8 +53,7 @@ class HttpService {
 
     get token() {
         if (!this._token) {
-            // this._token = LocalStorage.get.item(CONFIG.STORAGE.token);
-            this._token = storage.get(config.STORAGE.token)
+            this._token = STORAGE.get(CONFIG.STORAGE.token)
         }
         return this._token;
     }

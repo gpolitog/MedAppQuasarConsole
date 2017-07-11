@@ -1,8 +1,8 @@
-import config from '../config/config'
-import storage from './storage'
+import CONFIG from '../config/config'
+import STORAGE from './storage'
 
 export default {
     isLoggedIn() {
-        return storage.has(config.STORAGE.token)
+        return STORAGE.has(CONFIG.STORAGE.token)
     }
 }
