@@ -1,5 +1,5 @@
 <template>
-    <q-modal ref="modal" class="minimized" :noEscDismiss="closeOnEscape" :noBackdropDismiss="closeOnOutsideClick">
+    <q-modal ref="modalComponent" class="minimized" :noEscDismiss="closeOnEscape" :noBackdropDismiss="closeOnOutsideClick">
         <div class="content">
             <div class="header">
                 <div class="float-left" v-if="modalHeader">
@@ -75,24 +75,24 @@
 
 <script>
 export default {
-    name: 'modal',
+    name: 'modalComponent',
     methods: {
         open() {
-            this.$refs.modal.open()
+            this.$refs.modalComponent.open()
         },
         close() {
-            this.$refs.modal.close()
+            this.$refs.modalComponent.close()
         },
         submit() {
             this.$emit('onSubmit')
         },
         cancel() {
             this.$emit('onCancel')
-            this.$refs.modal.close()
+            this.$refs.modalComponent.close()
         },
         exit() {
             this.$emit('onExit')
-            this.$refs.modal.close()
+            this.$refs.modalComponent.close()
         }
     },
     props: {

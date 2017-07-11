@@ -29,21 +29,22 @@
                 </q-data-table>
             </card-panel>
         </div>
-        <modal ref="createModal" modalHeader="Create Account" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onExit="closeCreateAccountModal()" @onCancel="closeCreateAccountModal()" @onSubmit="createAccount()" :disableButtons="isProcessing">
+    
+        <modal-component ref="createModal" modalHeader="Create Account" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onExit="closeCreateAccountModal()" @onCancel="closeCreateAccountModal()" @onSubmit="createAccount()" :disableButtons="isProcessing">
             <form>
                 <div class="stacked-label">
-                    <input required class="full-width" :disabled="isProcessing" v-model="newAccount.username">
+                    <input type="email" required class="full-width" :disabled="isProcessing" v-model="newAccount.username">
                     <label class="input-label-error">Username</label>
-                    <span class="error-msg" v-if="$v.newAccount.username.$error && !$v.newAccount.username.required">Username is required!</span>
-                    <span class="error-msg" v-if="$v.newAccount.username.$error && !$v.newAccount.username.email">Invalid email format!</span>
+                    <p class="error-msg" v-if="$v.newAccount.username.$error && !$v.newAccount.username.required">Username is required!</p>
+                    <p class="error-msg" v-if="$v.newAccount.username.$error && !$v.newAccount.username.email">Invalid email format!</p>
                 </div>
                 <div class="stacked-label">
                     <input type="number" required class="full-width" :disabled="isProcessing" v-model="newAccount.noOfClinics">
                     <label>Number Of Clinics</label>
-                    <span class="error-msg" v-if="$v.newAccount.noOfClinics.$error && !$v.newAccount.noOfClinics.required">Number Of Clinics is required!</span>
+                    <p class="error-msg" v-if="$v.newAccount.noOfClinics.$error && !$v.newAccount.noOfClinics.required">Number Of Clinics is required!</p>
                 </div>
             </form>
-        </modal>
+        </modal-component>
     </page-content>
 </template>
 
@@ -62,16 +63,17 @@ import { Toast } from 'quasar'
 import { required, email } from 'vuelidate/lib/validators'
 
 import cardPanel from '../components/CardPanel.vue'
-import modal from '../components/Modal.vue'
+import modalComponent from '../components/Modal.vue'
 import pageContent from '../components/PageContent.vue'
 
 import CONFIG from '../../config/config'
+import { DialogService } from '../../utils/dialog-service'
 import HTTP from '../../utils/http'
 
 export default {
     components: {
         cardPanel,
-        modal,
+        modalComponent,
         pageContent
     },
     data() {
@@ -136,7 +138,7 @@ export default {
     },
     methods: {
         createAccount() {
-            this.$v.$touch();
+            this.$v.newAccount.$touch();
             if (!this.$v.newAccount.$error) {
                 this.isProcessing = true
                 HTTP.post(CONFIG.API.users, this.newAccount).then(response => {
@@ -146,13 +148,23 @@ export default {
                         Toast.create.positive({
                             html: `Account has been successfully created. Pre-generated password has been sent.`
                         })
+
                     }
                 }).catch(e => {
                     this.isProcessing = false
                 })
             }
         },
+        clearNewAccountObject() {
+            this.newAccount = {
+                username: '',
+                role: 2,
+                noOfClinics: null
+            }
+            this.$v.newAccount.$reset()
+        },
         openCreateAccountModal() {
+            this.clearNewAccountObject()
             this.$refs.createModal.open()
         },
         closeCreateAccountModal() {
