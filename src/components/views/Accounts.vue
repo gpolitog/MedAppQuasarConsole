@@ -58,7 +58,7 @@
 </style>
 
 <script>
-import { Dialog } from 'quasar'
+import { Toast } from 'quasar'
 import { required, email } from 'vuelidate/lib/validators'
 
 import cardPanel from '../components/CardPanel.vue'
@@ -143,11 +143,8 @@ export default {
                     this.isProcessing = false
                     if (response) {
                         this.$refs.createModal.close()
-                        Dialog.create({
-                            message: `Account has been successfully created. Pre-generated password has been sent.`,
-                            buttons: [
-                                'OK'
-                            ]
+                        Toast.create.positive({
+                            html: `Account has been successfully created. Pre-generated password has been sent.`
                         })
                     }
                 }).catch(e => {
