@@ -32,12 +32,15 @@
         <modal ref="createModal" modalHeader="Create Account" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onExit="closeCreateAccountModal()" @onCancel="closeCreateAccountModal()" @onSubmit="createAccount()" :disableButtons="isProcessing">
             <form>
                 <div class="stacked-label">
-                    <input required class="full-width" :disabled="isProcessing" v-model="newAccount.email">
-                    <label class="input-label-error">Email</label>
+                    <input required class="full-width" :disabled="isProcessing" v-model="newAccount.username">
+                    <label class="input-label-error">Username</label>
+                    <span class="error-msg" v-if="$v.newAccount.username.$error && !$v.newAccount.username.required">Username is required!</span>
+                    <span class="error-msg" v-if="$v.newAccount.username.$error && !$v.newAccount.username.email">Invalid email format!</span>
                 </div>
                 <div class="stacked-label">
                     <input type="number" required class="full-width" :disabled="isProcessing" v-model="newAccount.noOfClinics">
                     <label>Number Of Clinics</label>
+                    <span class="error-msg" v-if="$v.newAccount.noOfClinics.$error && !$v.newAccount.noOfClinics.required">Number Of Clinics is required!</span>
                 </div>
             </form>
         </modal>
@@ -55,9 +58,15 @@
 </style>
 
 <script>
+import { Dialog } from 'quasar'
+import { required, email } from 'vuelidate/lib/validators'
+
 import cardPanel from '../components/CardPanel.vue'
 import modal from '../components/Modal.vue'
 import pageContent from '../components/PageContent.vue'
+
+import CONFIG from '../../config/config'
+import HTTP from '../../utils/http'
 
 export default {
     components: {
@@ -113,15 +122,38 @@ export default {
             ],
             isProcessing: false,
             newAccount: {
-                email: '',
-                noOfClinics: ''
+                username: '',
+                role: 2,
+                noOfClinics: null
             }
+        }
+    },
+    validations: {
+        newAccount: {
+            username: { required, email },
+            noOfClinics: { required }
         }
     },
     methods: {
         createAccount() {
-            console.log('createAccount')
-            this.isProcessing = true
+            this.$v.$touch();
+            if (!this.$v.newAccount.$error) {
+                this.isProcessing = true
+                HTTP.post(CONFIG.API.users, this.newAccount).then(response => {
+                    this.isProcessing = false
+                    if (response) {
+                        this.$refs.createModal.close()
+                        Dialog.create({
+                            message: `Account has been successfully created. Pre-generated password has been sent.`,
+                            buttons: [
+                                'OK'
+                            ]
+                        })
+                    }
+                }).catch(e => {
+                    this.isProcessing = false
+                })
+            }
         },
         openCreateAccountModal() {
             this.$refs.createModal.open()

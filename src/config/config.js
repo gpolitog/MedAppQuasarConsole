@@ -1,6 +1,8 @@
 export default {
     API: {
-        authenticate: '/users/authenticate'
+        authenticate: `/users/authenticate`,
+
+        users: `/users`
     },
     STORAGE: {
         token: `kento`

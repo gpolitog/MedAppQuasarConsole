@@ -9,7 +9,7 @@
     </div>
 </template>
 
-<script type="text/javascript">
+<script>
 import { mapGetters } from 'vuex'
 export default {
     name: 'mainHeader',

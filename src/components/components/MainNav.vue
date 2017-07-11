@@ -13,7 +13,7 @@
     </q-drawer>
 </template>
 
-<script type="text/javascript">
+<script>
 import { mapGetters } from 'vuex'
 import STORAGE from '../../utils/storage'
 

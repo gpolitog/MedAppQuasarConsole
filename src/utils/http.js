@@ -43,7 +43,9 @@ let dialogHandler = errorMessage => {
         message: errorMessage,
         buttons: [
             'OK'
-        ]
+        ],
+        noBackdropDismiss: true,
+        noEscDismiss: true
     })
 }
 
@@ -63,7 +65,7 @@ class HttpService {
     }
 
     setAuthorizationHeader() {
-        HTTP.defaults.headers.common['Authorization'] = this.token;
+        HTTP.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
     }
 
     get(url, parameters) {

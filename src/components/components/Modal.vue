@@ -5,8 +5,10 @@
                 <div class="float-left" v-if="modalHeader">
                     {{ modalHeader }}
                 </div>
-                <div class="float-right pointer" :disabled="disableButtons" v-if="showCloseButton" @click="exit()">
-                    <i>clear</i>
+                <div class="float-right pointer" v-if="showCloseButton">
+                    <button class="clear small " :disabled="disableButtons" @click="exit()">
+                        <i>clear</i>
+                    </button>
                 </div>
             </div>
             <div class="body">
@@ -15,12 +17,12 @@
             </div>
             <div class="row footer">
                 <div class="auto">
-                    <button class="primary small clear" :disabled="disableButtons" @click="cancel() ">
+                    <button class="primary small clear" :disabled="disableButtons" @click="cancel()">
                         {{ cancelLabel }}
                     </button>
                 </div>
-                <div class="auto ">
-                    <button class="primary small " :disabled="disableButtons" @click="submit() ">
+                <div class="auto">
+                    <button class="primary small modal-actions" :disabled=" disableButtons " @click="submit() ">
                         {{ doneLabel }}
                     </button>
                 </div>
@@ -30,10 +32,6 @@
 </template>
 
 <style scoped>
-button {
-    min-width: 80px;
-}
-
 .body {
     padding: 15px 0;
 }
@@ -49,6 +47,11 @@ button {
 .body-large {
     min-width: 80vw;
 }
+
+.modal-actions {
+    min-width: 80px;
+}
+
 
 .content {
     padding: 20px;
