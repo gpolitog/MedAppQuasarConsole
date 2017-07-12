@@ -17,9 +17,12 @@ const routes = [
   { path: '*', component: load('Error404') }
 ]
 
-const router = new VueRouter({
+// const router = new VueRouter({
+//   mode: 'history', /* for websites only and not cordova build*/
+//   routes
+// })
+
+export default new VueRouter({
   mode: 'history', /* for websites only and not cordova build*/
   routes
 })
-
-export default router
