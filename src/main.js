@@ -21,26 +21,26 @@ Vue.use(Vuelidate)
 Vue.use(Quasar)
 
 // nav guard
-router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth) {
-    if (UTILS.isLoggedIn()) {
-      store.dispatch('loggedIn', true)
-      next()
-    } else {
-      next('/login')
-    }
-  } else {
-    next()
-  }
-})
+// router.beforeEach((to, from, next) => {
+//   if (to.meta.requiresAuth) {
+//     if (UTILS.isLoggedIn()) {
+//       store.dispatch('loggedIn', true)
+//       next()
+//     } else {
+//       next('/login')
+//     }
+//   } else {
+//     next()
+//   }
+// })
 
 // idling - 2mins in ms
-const eventsHub = new Vue()
+// const eventsHub = new Vue()
 
-Vue.use(IdleVue, {
-  eventEmitter: eventsHub,
-  idleTime: 120000
-})
+// Vue.use(IdleVue, {
+//   eventEmitter: eventsHub,
+//   idleTime: 120000
+// })
 
 Quasar.start(() => {
   /* eslint-disable no-new */
@@ -49,14 +49,14 @@ Quasar.start(() => {
     router,
     store,
     render: h => h(require('./App')),
-    onIdle() {
-      console.log(`auto logged out. console is inactive.`)
-      store.dispatch('loggedIn', false)
-      router.push('/')
-      STORAGE.clear()
-    },
-    onActive() {
-      console.log(`console is active`)
-    }
+    // onIdle() {
+    //   console.log(`auto logged out. console is inactive.`)
+    //   store.dispatch('loggedIn', false)
+    //   router.push('/')
+    //   STORAGE.clear()
+    // },
+    // onActive() {
+    //   console.log(`console is active`)
+    // }
   })
 })
