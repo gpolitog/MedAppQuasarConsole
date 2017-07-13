@@ -26,11 +26,9 @@ let getters = {
   }
 }
 
-const store = new Vuex.Store({
+export default new Vuex.Store({
   state,
   mutations,
   actions,
   getters
 })
-
-export default store
