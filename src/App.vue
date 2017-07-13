@@ -13,16 +13,11 @@
 </template>
 
 <style lang="stylus">
+@import '~src/themes/app.variables.styl';
 @import '~src/themes/app.styl';
 
 body {
-  background: url('./assets/console-bg.jpg');
-  -moz-background-size: cover !important;
-  -o-background-size: cover !important;
-  -webkit-background-size: cover !important;
-  background-attachment: fixed !important;
-  background-repeat: no-repeat !important;
-  background-size: cover !important;
+  background-color: $page-content-bg-color;
   height: 100vh;
   position: relative !important;
   margin: 0;

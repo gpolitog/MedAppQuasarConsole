@@ -40,8 +40,7 @@ let responseErrorHandler = error => {
 }
 
 let dialogHandler = errorMessage => {
-    const dialogService = new DialogService(errorMessage)
-    dialogService.pop()
+    new DialogService(errorMessage)
 }
 
 HTTP.interceptors.request.use(requestSuccessHandler, requestErrorHandler)
