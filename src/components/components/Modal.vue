@@ -17,13 +17,14 @@
             </div>
             <div class="row footer">
                 <div class="auto">
-                    <button class="primary small clear" :disabled="disableButtons" @click="cancel()">
+                    <button class="primary small round clear" :disabled="disableButtons" @click="cancel()">
                         {{ cancelLabel }}
                     </button>
                 </div>
                 <div class="auto">
-                    <button class="primary small modal-actions" :disabled=" disableButtons " @click="submit() ">
+                    <button class="primary small round modal-actions" :disabled=" disableButtons " @click="submit() ">
                         {{ doneLabel }}
+                        <spinner class="button-spinner" color="white" :size="20" v-if="showSpinner"></spinner>
                     </button>
                 </div>
             </div>
@@ -111,13 +112,17 @@ export default {
             type: Boolean
         },
         doneLabel: {
-            default: 'OK',
+            default: 'DONE',
             type: String
         },
         modalHeader: {
             type: String
         },
         showCloseButton: {
+            type: Boolean
+        },
+        showSpinner: {
+            default: false,
             type: Boolean
         }
     }

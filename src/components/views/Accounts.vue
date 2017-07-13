@@ -20,17 +20,18 @@
             </card-panel>
     
             <card-panel sectionHeader="Accounts List">
-                <q-data-table :data="accounts" :config="config" :columns="columns" @refresh="refresh">
-                    <template slot="selection" scope="selection">
-                        <button class="primary clear" @click.prevent="editAccount(selection)">
-                            <i>edit</i>
-                        </button>
-                    </template>
-                </q-data-table>
+                ON GOING DEVELOPMENT
+                <!--<q-data-table :data="accounts" :config="config" :columns="columns" @refresh="refresh">
+                                        <template slot="selection" scope="selection">
+                                            <button class="primary clear" @click.prevent="editAccount(selection)">
+                                                <i>edit</i>
+                                            </button>
+                                        </template>
+                                    </q-data-table>-->
             </card-panel>
         </div>
     
-        <modal-component ref="createModal" modalHeader="Create Account" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onExit="closeCreateAccountModal()" @onCancel="closeCreateAccountModal()" @onSubmit="createAccount()" :disableButtons="isProcessing">
+        <modal-component ref="createAccountModal" modalHeader="Create Account" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onSubmit="createAccount()" :disableButtons="isProcessing" :showSpinner="isProcessing">
             <form>
                 <div class="stacked-label">
                     <input type="email" required class="full-width" :disabled="isProcessing" v-model="newAccount.username">
@@ -59,8 +60,8 @@
 </style>
 
 <script>
-import { Toast } from 'quasar'
 import { required, email } from 'vuelidate/lib/validators'
+import { Toast } from 'quasar'
 
 import cardPanel from '../components/CardPanel.vue'
 import modalComponent from '../components/Modal.vue'
@@ -144,11 +145,10 @@ export default {
                 HTTP.post(CONFIG.API.users, this.newAccount).then(response => {
                     this.isProcessing = false
                     if (response) {
-                        this.$refs.createModal.close()
+                        this.$refs.createAccountModal.close()
                         Toast.create.positive({
                             html: `Account has been successfully created. Pre-generated password has been sent.`
                         })
-
                     }
                 }).catch(e => {
                     this.isProcessing = false
@@ -165,10 +165,7 @@ export default {
         },
         openCreateAccountModal() {
             this.clearNewAccountObject()
-            this.$refs.createModal.open()
-        },
-        closeCreateAccountModal() {
-            console.log('closeCreateAccountModal')
+            this.$refs.createAccountModal.open()
         },
         editAccount(account) {
             console.log('edit => ' + JSON.stringify(account));
