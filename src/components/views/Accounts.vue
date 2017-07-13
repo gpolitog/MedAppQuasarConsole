@@ -1,5 +1,5 @@
 <template>
-    <page-content :centerAligned="false" :withBackground="true">
+    <page-content :centerAligned="false">
         <div class="sm-width-4of5 md-width-4of5 gt-md-width-4of5">
             <card-panel sectionHeader="Accounts">
                 Here What's App Doc accounts are managed. It involves creation of doctor accounts, accounts details modification and resetting of password.
@@ -22,12 +22,12 @@
             <card-panel sectionHeader="Accounts List">
                 ON GOING DEVELOPMENT
                 <!--<q-data-table :data="accounts" :config="config" :columns="columns" @refresh="refresh">
-                                        <template slot="selection" scope="selection">
-                                            <button class="primary clear" @click.prevent="editAccount(selection)">
-                                                <i>edit</i>
-                                            </button>
-                                        </template>
-                                    </q-data-table>-->
+                    <template slot="selection" scope="selection">
+                        <button class="primary clear" @click.prevent="editAccount(selection)">
+                            <i>edit</i>
+                        </button>
+                    </template>
+                </q-data-table>-->
             </card-panel>
         </div>
     

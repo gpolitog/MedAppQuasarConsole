@@ -1,5 +1,5 @@
 <template>
-    <div class="pageContent" :class="{'center-aligned' : centerAligned, 'with-background' : withBackground}">
+    <div class="pageContent" :class="{'center-aligned' : centerAligned}">
         <div class="pageContentBody">
             <slot></slot>
         </div>
@@ -25,10 +25,6 @@
     display: flex;    
     justify-content: center;
 }
-
-.with-background {
-    background-color: $page-content-bg-color;
-}
 </style>
 
 <script>
@@ -36,9 +32,6 @@ export default {
     name: 'pageContent',
     props: {
         centerAligned: {
-            type: Boolean
-        },
-        withBackground: {
             type: Boolean
         }
     }

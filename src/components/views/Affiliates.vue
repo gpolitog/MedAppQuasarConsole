@@ -1,5 +1,5 @@
 <template>
-    <page-content :centerAligned="true" :withBackground="true">
+    <page-content :centerAligned="false">
         <div class="sm-width-4of5 md-width-4of5 gt-md-width-4of5">
             <card-panel sectionHeader="Affiliates">
                 Here clinic's affiliations are managed. Affiliate is an arm of an organization or a subsidiary.
