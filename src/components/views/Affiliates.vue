@@ -23,7 +23,7 @@
                 ON GOING DEVELOPMENT
             </card-panel>
     
-            <modal-component ref="createAffiliateModal" modalHeader="Create Account" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onSubmit="createAffiliate()" :disableButtons="isProcessing" :showSpinner="isProcessing">
+            <modal-component ref="createAffiliateModal" modalHeader="Create Affiliate" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onSubmit="createAffiliate()" :disableButtons="isProcessing" :showSpinner="isProcessing">
                 <form>
                     <div class="stacked-label">
                         <input required class="full-width" :disabled="isProcessing" v-model="newAffiliate.affiliateName">
