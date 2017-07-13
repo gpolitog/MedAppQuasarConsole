@@ -21,18 +21,19 @@ Vue.use(Vuelidate)
 Vue.use(Quasar)
 
 // nav guard
-// router.beforeEach((to, from, next) => {
-//   if (to.meta.requiresAuth) {
-//     if (UTILS.isLoggedIn()) {
-//       store.dispatch('loggedIn', true)
-//       next()
-//     } else {
-//       next('/login')
-//     }
-//   } else {
-//     next()
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth) {
+    if (UTILS.isLoggedIn()) {
+      store.dispatch('loggedIn', true)
+      next()
+    } else {
+      console.log(to.fullPath + ' not allowed. redirecting to login')
+      next('/')
+    }
+  } else {
+    next()
+  }
+})
 
 // idling - 2mins in ms
 // const eventsHub = new Vue()
