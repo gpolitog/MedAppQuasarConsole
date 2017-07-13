@@ -2,7 +2,7 @@ import axios from 'axios';
 // import { Loading } from 'quasar'
 
 import CONFIG from '../config/config'
-import { DialogService } from './dialog-service'
+import { DialogService } from './dialog'
 import STORAGE from './storage'
 
 const HTTP = axios.create({
