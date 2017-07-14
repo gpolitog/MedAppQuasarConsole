@@ -68,7 +68,6 @@ import modalComponent from '../components/Modal.vue'
 import pageContent from '../components/PageContent.vue'
 
 import CONFIG from '../../config/config'
-import { DialogService } from '../../utils/dialog'
 import HTTP from '../../utils/http'
 
 export default {

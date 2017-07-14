@@ -1,8 +1,7 @@
-import axios from 'axios';
-// import { Loading } from 'quasar'
+import axios from 'axios'
+import { Dialog } from 'quasar'
 
 import CONFIG from '../config/config'
-import { DialogService } from './dialog'
 import STORAGE from './storage'
 
 const HTTP = axios.create({
@@ -14,18 +13,11 @@ let requestSuccessHandler = config => {
     return config
 }
 
-// let requestSuccessWithLoaderHandler = config => {
-//     Loading.show()
-//     return config
-// }
-
 let requestErrorHandler = error => {
-    // Loading.hide()
     return Promise.reject(error)
 }
 
 let responseSuccessHandler = response => {
-    // Loading.hide()
     if (response && response.data && response.data.status) {
         return response.data
     } else {
@@ -34,13 +26,19 @@ let responseSuccessHandler = response => {
 }
 
 let responseErrorHandler = error => {
-    // Loading.hide()
     dialogHandler(error.message)
     return Promise.reject(error)
 }
 
 let dialogHandler = errorMessage => {
-    new DialogService(errorMessage)
+    Dialog.create({
+        message: errorMessage,
+        buttons: [
+            'OK'
+        ],
+        noBackdropDismiss: true,
+        noEscDismiss: true
+    })
 }
 
 HTTP.interceptors.request.use(requestSuccessHandler, requestErrorHandler)
@@ -110,4 +108,3 @@ class HttpService {
 }
 
 export default new HttpService()
-

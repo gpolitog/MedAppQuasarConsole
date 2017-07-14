@@ -19,7 +19,7 @@
                 </div>
             </card-panel>
     
-            <card-panel sectionHeader="Affilaites List">
+            <card-panel sectionHeader="Affiliates List">
                 ON GOING DEVELOPMENT
             </card-panel>
     
@@ -40,6 +40,16 @@
         </div>
     </page-content>
 </template>
+
+<style scoped lang="stylus">
+@import '~src/themes/app.variables.styl';
+
+@media (max-width: $max-width-sm) {
+    .button-centered {
+        text-align: center;
+    }
+}
+</style>
 
 <script>
 import { required } from 'vuelidate/lib/validators'
