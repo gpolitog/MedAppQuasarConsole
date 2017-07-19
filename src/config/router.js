@@ -3,9 +3,10 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-function load(component) {
-  return () => System.import(`components/${component}.vue`)
-}
+// FOR LAZY LOADING
+// function load(component) {
+//   return () => System.import(`components/${component}.vue`)
+// }
 
 export default new VueRouter({
   /*
@@ -21,11 +22,54 @@ export default new VueRouter({
    */
   // mode: 'history', -- does not work in heroku
   routes: [
-    { path: '/', redirect: '/login' },
-    { path: '/login', component: load('views/Login'), meta: { name: 'Login' } },
-    { path: '/dashboard', component: load('views/Dashboard'), meta: { name: 'Dashboard', requiresAuth: true } },
-    { path: '/accounts', component: load('views/Accounts'), meta: { name: 'Accounts', requiresAuth: true } },
-    { path: '/affiliates', component: load('views/Affiliates'), meta: { name: 'Affiliates', requiresAuth: true } },
-    { path: '*', component: load('Error404') }
+    {
+      path: '/',
+      redirect: '/login'
+    },
+    {
+      path: '/login',
+      meta: { name: 'Login' },
+      // FOR LAZY LOADING
+      // component: load('views/Login'),
+      component: function (resolve) {
+        require(['components/views/Login.vue'], resolve)
+      }
+    },
+    {
+      path: '/dashboard',
+      meta: { name: 'Dashboard', requiresAuth: true },
+      // FOR LAZY LOADING
+      // component: load('views/Dashboard'),
+      component: function (resolve) {
+        require(['components/views/Dashboard.vue'], resolve)
+      }
+    },
+    {
+      path:
+      '/accounts',
+      meta: { name: 'Accounts', requiresAuth: true },
+      // FOR LAZY LOADING
+      // component: load('views/Accounts'),
+      component: function (resolve) {
+        require(['components/views/Accounts.vue'], resolve)
+      }
+    },
+    {
+      path: '/affiliates',
+      meta: { name: 'Affiliates', requiresAuth: true },
+      // FOR LAZY LOADING
+      // component: load('views/Affiliates'),
+      component: function (resolve) {
+        require(['components/views/Affiliates.vue'], resolve)
+      }
+    },
+    {
+      path: '*',
+      // FOR LAZY LOADING
+      // component: load('Error404')
+      component: function (resolve) {
+        require(['components/Error404.vue'], resolve)
+      }
+    }
   ]
 })

@@ -20,14 +20,16 @@
             </card-panel>
     
             <card-panel sectionHeader="Accounts List">
-                ON GOING DEVELOPMENT
-                <!--<q-data-table :data="accounts" :config="config" :columns="columns" @refresh="refresh">
+                <q-data-table :data="accounts" :config="config" :columns="columns" @refresh="refresh">
                     <template slot="selection" scope="selection">
                         <button class="primary clear" @click.prevent="editAccount(selection)">
                             <i>edit</i>
                         </button>
+                        <button class="primary clear" @click.prevent="resetPassword(selection)">
+                            <i>redo</i>
+                        </button>
                     </template>
-                </q-data-table>-->
+                </q-data-table>
             </card-panel>
         </div>
     
@@ -68,6 +70,7 @@ import modalComponent from '../components/Modal.vue'
 import pageContent from '../components/PageContent.vue'
 
 import CONFIG from '../../config/config'
+import CONSTANTS from '../../config/constants'
 import HTTP from '../../utils/http'
 
 export default {
@@ -79,31 +82,25 @@ export default {
     data() {
         return {
             accounts: [
-                { id: 0, username: 'doc0', password: 'doc0', role: 1, status: 0 },
-                { id: 1, username: 'doc1', password: 'doc1', role: 2, status: 1 },
-                { id: 2, username: 'doc2', password: 'doc2', role: 3, status: 2 },
-                { id: 3, username: 'doc3', password: 'doc3', role: 4, status: 3 },
-                { id: 4, username: 'doc4', password: 'doc4', role: 5, status: 4 },
-                { id: 5, username: 'doc5', password: 'doc5', role: 1, status: 0 },
-                { id: 6, username: 'doc6', password: 'doc6', role: 2, status: 1 },
-                { id: 7, username: 'doc7', password: 'doc7', role: 3, status: 2 },
-                { id: 8, username: 'doc8', password: 'doc8', role: 4, status: 3 },
-                { id: 9, username: 'doc9', password: 'doc9', role: 5, status: 4 }
+                { id: 0, username: 'test', password: 'test1234', role: 1, status: 1 },
             ],
             config: {
                 rowHeight: '50px',
                 refresh: true,
                 leftStickyColumns: 1,
                 bodyStyle: {
-                    minHeight: '30vh',
-                    maxHeight: '30vh'
+                    height: '30vh'
                 },
                 responsive: true,
                 pagination: {
                     rowsPerPage: 5,
                     options: [5, 10]
                 },
-                selection: 'single'
+                selection: 'single',
+                messages: {
+                    noData: '<i>warning</i> No accounts available to show.',
+                    noDataAfterFiltering: '<i>warning</i> No accounts found.'
+                },
             },
             columns: [
                 {
@@ -115,11 +112,17 @@ export default {
                 },
                 {
                     label: 'Role',
-                    field: 'role'
+                    field: 'role',
+                    format(value, row) {
+                        return CONSTANTS.LOVS.role[value - 1]
+                    }
                 },
                 {
                     label: 'Status',
-                    field: 'status'
+                    field: 'status',
+                    format(value, row) {
+                        return CONSTANTS.LOVS.status[value - 1]
+                    }
                 }
             ],
             isProcessing: false,
@@ -167,6 +170,9 @@ export default {
             this.$refs.createAccountModal.open()
         },
         editAccount(account) {
+            console.log('edit => ' + JSON.stringify(account));
+        },
+        resetPassword(account) {
             console.log('edit => ' + JSON.stringify(account));
         },
         refresh(done) {

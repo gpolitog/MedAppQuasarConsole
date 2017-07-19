@@ -7,9 +7,9 @@ export default {
         status: [
             'Inactive',
             'Incomplete Registration - Update password',
-            'Incomplete Registration - Upate Profile',
-            'Incomplete Registration - Upate Profile Picture',
-            'Incomplete Registration - Upate Clinic',
+            'Incomplete Registration - Update Profile',
+            'Incomplete Registration - Update Profile Picture',
+            'Incomplete Registration - Update Clinic',
             'Active'
         ]
     }
