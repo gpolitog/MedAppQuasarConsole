@@ -24,7 +24,7 @@ export default {
     },
     methods: {
         logout() {
-            this.$store.dispatch('loggedIn', false)
+            this.$store.dispatch('clearStore')
             STORAGE.clear()
         }
     }

@@ -26,8 +26,14 @@ let mutations = {
   },
   setIsAffiliatesLoaded(state, value) {
     Vue.set(state, 'isAffiliatesLoaded', value)
+  },
+  revertStore(state) {
+    Vue.set(state, 'isLoggedIn', false)
+    Vue.set(state, 'accounts', [])
+    Vue.set(state, 'isAccountsLoaded', false)
+    Vue.set(state, 'affiliates', [])
+    Vue.set(state, 'isAffiliatesLoaded', false)
   }
-
 }
 
 let actions = {
@@ -45,6 +51,9 @@ let actions = {
   },
   affiliatesLoaded(context, value) {
     context.commit('setIsAffiliatesLoaded', value)
+  },
+  clearStore(context) {
+    context.commit('revertStore')
   }
 }
 
