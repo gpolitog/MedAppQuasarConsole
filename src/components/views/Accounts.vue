@@ -19,8 +19,8 @@
                 </div>
             </card-panel>
     
-            <card-panel sectionHeader="Accounts List">
-                <q-data-table :data="accounts" :config="config" :columns="columns" @refresh="refresh">
+            <card-panel sectionHeader="Accounts List" :showSpinner="!isAccountListLoaded">
+                <q-data-table :data="accountList" :config="config" :columns="columns" @refresh="refresh" v-if="isAccountListLoaded">
                     <template slot="selection" scope="selection">
                         <button class="primary clear" @click.prevent="editAccount(selection)">
                             <i>edit</i>
@@ -64,6 +64,7 @@
 <script>
 import { required, email } from 'vuelidate/lib/validators'
 import { Toast } from 'quasar'
+import { mapGetters } from 'vuex'
 
 import cardPanel from '../components/CardPanel.vue'
 import modalComponent from '../components/Modal.vue'
@@ -79,11 +80,24 @@ export default {
         modalComponent,
         pageContent
     },
+    created() {
+        if (this.getIsAccountsLoaded) {
+            this.accounts = this.getAccounts;
+            this.isAccountListLoaded = true;
+        } else {
+            HTTP.get(CONFIG.API.users, []).then(response => {
+                if (response) {
+                    this.setAccounts(response.result)
+                }
+                this.isAccountListLoaded = true
+            }).catch(error => {
+                this.accountList = []
+                this.isAccountListLoaded = true
+            })
+        }
+    },
     data() {
         return {
-            accounts: [
-                { id: 0, username: 'test', password: 'test1234', role: 1, status: 1 },
-            ],
             config: {
                 rowHeight: '50px',
                 refresh: true,
@@ -130,7 +144,9 @@ export default {
                 username: '',
                 role: 2,
                 noOfClinics: null
-            }
+            },
+            accounts: [],
+            isAccountListLoaded: false
         }
     },
     validations: {
@@ -139,11 +155,13 @@ export default {
             noOfClinics: { required }
         }
     },
+    computed: {
+        ...mapGetters(['getIsAccountsLoaded', 'getAccounts'])
+    },
     methods: {
         createAccount() {
             this.$v.newAccount.$touch();
             if (!this.$v.newAccount.$error) {
-                this.isProcessing = true
                 HTTP.post(CONFIG.API.users, this.newAccount).then(response => {
                     this.isProcessing = false
                     if (response) {
@@ -152,7 +170,8 @@ export default {
                             html: `Account has been successfully created. Pre-generated password has been sent.`
                         })
                     }
-                }).catch(e => {
+                    this.isProcessing = true
+                }).catch(error => {
                     this.isProcessing = false
                 })
             }
@@ -178,6 +197,11 @@ export default {
         refresh(done) {
             console.log('refresh table')
             done()
+        },
+        setAccounts(accounts) {
+            this.accounts = accounts
+            this.$store.dispatch('setAccounts', accounts ? accounts : [])
+            this.$store.dispatch('accountsLoaded', true)
         }
     }
 }

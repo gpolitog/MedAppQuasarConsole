@@ -50,7 +50,6 @@ form {
 </style>
 
 <script>
-import { mapMutations } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
 
 import cardPanel from '../components/CardPanel.vue'

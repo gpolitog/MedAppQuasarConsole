@@ -89,7 +89,6 @@ export default {
             if (!this.$v.newAffiliate.$error) {
                 this.isProcessing = true
                 HTTP.post(CONFIG.API.affiliates, this.newAffiliate).then(response => {
-                    this.isProcessing = false
                     if (response) {
                         this.$refs.createAffiliateModal.close()
                         Toast.create.positive({
@@ -97,7 +96,8 @@ export default {
                         })
 
                     }
-                }).catch(e => {
+                    this.isProcessing = false
+                }).catch(error => {
                     this.isProcessing = false
                 })
             }
