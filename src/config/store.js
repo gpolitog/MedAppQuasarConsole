@@ -6,7 +6,9 @@ Vue.use(Vuex)
 let state = {
   isLoggedIn: false,
   isAccountsLoaded: false,
-  accounts: []
+  accounts: [],
+  isAffiliatesLoaded: false,
+  affiliates: []
 }
 
 let mutations = {
@@ -18,18 +20,31 @@ let mutations = {
   },
   setIsAccountsLoaded(state, value) {
     Vue.set(state, 'isAccountsLoaded', value)
+  },
+  setAffiliates(state, value) {
+    Vue.set(state, 'affiliates', value)
+  },
+  setIsAffiliatesLoaded(state, value) {
+    Vue.set(state, 'isAffiliatesLoaded', value)
   }
+
 }
 
 let actions = {
   loggedIn(context, value) {
     context.commit('setIsLoggedIn', value)
   },
-  setAccounts(state, value) {
-    context.commit('setaccounts', value)
+  setAccounts(context, value) {
+    context.commit('setAccounts', value)
   },
-  accountsLoaded(state, value) {
-    context.commit('setisAccountsLoaded', value)
+  accountsLoaded(context, value) {
+    context.commit('setIsAccountsLoaded', value)
+  },
+  setAffiliates(context, value) {
+    context.commit('setAffiliates', value)
+  },
+  affiliatesLoaded(context, value) {
+    context.commit('setIsAffiliatesLoaded', value)
   }
 }
 
@@ -42,6 +57,12 @@ let getters = {
   },
   getAccounts() {
     return state.accounts
+  },
+  getIsAffiliatesLoaded() {
+    return state.isAffiliatesLoaded
+  },
+  getAffiliates() {
+    return state.affiliates
   }
 }
 

@@ -1,12 +1,12 @@
 <template>
     <q-modal ref="modalComponent" class="minimized" :noEscDismiss="closeOnEscape" :noBackdropDismiss="closeOnOutsideClick">
         <div class="content">
-            <div class="header">
-                <div class="float-left" v-if="modalHeader">
+            <div class="header" :class="{'header-align-start' : modalHeader && !showCloseButton, 'header-align-end': !modalHeader && showCloseButton, 'header-align-space-between': modalHeader && showCloseButton}">
+                <div v-if="modalHeader">
                     {{ modalHeader }}
                 </div>
-                <div class="float-right pointer" v-if="showCloseButton">
-                    <button class="clear small " :disabled="disableButtons" @click="exit()">
+                <div class="pointer" v-if="showCloseButton">
+                    <button class="clear " :disabled="disableButtons" @click="exit()">
                         <i>clear</i>
                     </button>
                 </div>
@@ -53,7 +53,6 @@
     min-width: 80px;
 }
 
-
 .content {
     padding: 20px;
 }
@@ -63,10 +62,23 @@
 }
 
 .header {
-    display: inline-block;
+    display: flex;
+    align-items: center;
     font-weight: normal;
     font-size: 15px;
     width: 100%;
+}
+
+.header-align-start {
+    justify-content: flex-start;
+}
+
+.header-align-end {
+    justify-content: flex-end;
+}
+
+.header-align-space-between {
+    justify-content: space-between;
 }
 
 .pointer {

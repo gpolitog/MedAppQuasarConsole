@@ -20,7 +20,7 @@
             </card-panel>
     
             <card-panel sectionHeader="Accounts List" :showSpinner="!isAccountListLoaded">
-                <q-data-table :data="accountList" :config="config" :columns="columns" @refresh="refresh" v-if="isAccountListLoaded">
+                <q-data-table :data="accounts" :config="config" :columns="columns" @refresh="refresh" v-if="isAccountListLoaded">
                     <template slot="selection" scope="selection">
                         <button class="primary clear" @click.prevent="editAccount(selection)">
                             <i>edit</i>
@@ -113,7 +113,7 @@ export default {
                 selection: 'single',
                 messages: {
                     noData: '<i>warning</i> No accounts available to show.',
-                    noDataAfterFiltering: '<i>warning</i> No accounts found.'
+                    noDataAfterFiltering: '<i>warning</i> No account(s) found.'
                 },
             },
             columns: [
@@ -195,12 +195,21 @@ export default {
             console.log('edit => ' + JSON.stringify(account));
         },
         refresh(done) {
-            console.log('refresh table')
-            done()
+            HTTP.get(CONFIG.API.users, []).then(response => {
+                if (response) {
+                    this.setAccounts(response.result)
+                }
+                done()
+                this.isAccountListLoaded = true
+            }).catch(error => {
+                this.accountList = []
+                this.isAccountListLoaded = true
+                done()
+            })
         },
         setAccounts(accounts) {
-            this.accounts = accounts
-            this.$store.dispatch('setAccounts', accounts ? accounts : [])
+            this.accounts = accounts ? accounts : []
+            this.$store.dispatch('setAccounts', this.accounts)
             this.$store.dispatch('accountsLoaded', true)
         }
     }

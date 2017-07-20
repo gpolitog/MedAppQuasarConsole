@@ -19,8 +19,14 @@
                 </div>
             </card-panel>
     
-            <card-panel sectionHeader="Affiliates List">
-                ON GOING DEVELOPMENT
+            <card-panel sectionHeader="Affiliates List" :showSpinner="!isAffiliateListLoaded">
+                <q-data-table :data="affiliates" :config="config" :columns="columns" @refresh="refresh" v-if="isAffiliateListLoaded">
+                    <template slot="selection" scope="selection">
+                        <button class="primary clear" @click.prevent="editAffiliate(selection)">
+                            <i>edit</i>
+                        </button>
+                    </template>
+                </q-data-table>
             </card-panel>
     
             <modal-component ref="createAffiliateModal" modalHeader="Create Affiliate" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onSubmit="createAffiliate()" :disableButtons="isProcessing" :showSpinner="isProcessing">
@@ -54,6 +60,7 @@
 <script>
 import { required } from 'vuelidate/lib/validators'
 import { Toast } from 'quasar'
+import { mapGetters } from 'vuex'
 
 import cardPanel from '../components/CardPanel.vue'
 import modalComponent from '../components/Modal.vue'
@@ -68,13 +75,62 @@ export default {
         modalComponent,
         pageContent
     },
+    created() {
+        if (this.getIsAffiliatesLoaded) {
+            this.affiliates = this.getAffiliates;
+            this.isAffiliateListLoaded = true;
+        } else {
+            HTTP.get(CONFIG.API.affiliates, []).then(response => {
+                if (response) {
+                    this.setAffiliates(response.result)
+                }
+                this.isAffiliateListLoaded = true
+            }).catch(error => {
+                this.affiliates = []
+                this.isAffiliateListLoaded = true
+            })
+        }
+    },
     data() {
         return {
+            config: {
+                rowHeight: '50px',
+                refresh: true,
+                leftStickyColumns: 1,
+                bodyStyle: {
+                    height: '30vh'
+                },
+                responsive: true,
+                pagination: {
+                    rowsPerPage: 5,
+                    options: [5, 10]
+                },
+                selection: 'single',
+                messages: {
+                    noData: '<i>warning</i> No affiliates available to show.',
+                    noDataAfterFiltering: '<i>warning</i> No affiliate(s) found.'
+                },
+            },
+            columns: [
+                {
+                    label: 'Affiliate Name',
+                    field: 'affiliateName',
+                    filter: true,
+                    sort: true,
+                    sort: 'string'
+                },
+                {
+                    label: 'Affiliate Code',
+                    field: 'affiliateCode'
+                }
+            ],
             isProcessing: false,
             newAffiliate: {
                 affiliateCode: '',
                 affiliateName: ''
-            }
+            },
+            affiliates: [],
+            isAffiliateListLoaded: false
         }
     },
     validations: {
@@ -82,6 +138,9 @@ export default {
             affiliateCode: { required },
             affiliateName: { required }
         }
+    },
+    computed: {
+        ...mapGetters(['getIsAffiliatesLoaded', 'getAffiliates'])
     },
     methods: {
         createAffiliate() {
@@ -112,6 +171,25 @@ export default {
         openCreateAffiliateModal() {
             this.clearNewAffiliateObject()
             this.$refs.createAffiliateModal.open()
+        },
+        editAffiliate(affiliate) {
+            console.log(JSON.stringify(affiliate))
+        },
+        refresh(done) {
+            HTTP.get(CONFIG.API.affiliates, []).then(response => {
+                if (response) {
+                    this.setAffiliates(response.result)
+                }
+                done()
+            }).catch(error => {
+                this.affiliates = []
+                done()
+            })
+        },
+        setAffiliates(affiliates) {
+            this.affiliates = affiliates ? affiliates : []
+            this.$store.dispatch('setAffiliates', this.affiliates)
+            this.$store.dispatch('affiliatesLoaded', true)
         }
     }
 }

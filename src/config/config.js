@@ -2,7 +2,7 @@ export default {
     API: {
         authenticate: `/users/authenticate`,
         affiliates: `/affiliates`,
-        users: `/users`
+        users: `/users`,
     },
     STORAGE: {
         token: `kento`
