@@ -214,6 +214,15 @@ export default {
             }
             this.$v.newAccount.$reset()
         },
+        clearSelectedAccountObject() {
+            this.selectedAccount = null
+            this.account = {
+                userId: null,
+                username: '',
+                role: null,
+                status: null
+            }
+        },
         openCreateAccountModal() {
             this.clearNewAccountObject()
             this.$refs.createAccountModal.open()
@@ -238,6 +247,7 @@ export default {
             })
         },
         openEditAccountModal(account) {
+            this.clearSelectedAccountObject()
             this.getSelectedAccountInfo(account)
             this.$refs.editAccountModal.open()
         },

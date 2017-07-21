@@ -197,33 +197,53 @@ export default {
             }
             this.$v.newAffiliate.$reset()
         },
+        clearNewAffiliateObject() {
+            this.newAffiliate = {
+                id: null,
+                affiliateCode: '',
+                affiliateName: ''
+            }
+            this.$v.newAffiliate.$reset()
+        },
+        clearSelectedAffiliateObject() {
+            this.selectedAffiliate = null
+            this.affiliate = {
+                id: null,
+                affiliateCode: '',
+                affiliateName: ''
+            }
+            this.$v.affiliate.$reset()
+        },
         openCreateAffiliateModal() {
             this.clearNewAffiliateObject()
             this.$refs.createAffiliateModal.open()
         },
         openEditAffiliateModal(affiliate) {
-            this.$v.affiliate.$reset()
+            this.clearSelectedAffiliateObject()
             this.getSelectedAffiliateInfo(affiliate)
             this.$refs.editAffiliateModal.open()
         },
         editAffiliate() {
-            this.isProcessing = true
-            this.isAffiliateListLoaded = false
-            HTTP.put(CONFIG.API.affiliates, this.affiliate).then(response => {
-                if (response) {
-                    this.$refs.editAffiliateModal.close()
-                    this.affiliates[this.selectedAffiliate.index] = this.affiliate
-                    this.setAffiliates(this.affiliates)
-                    Toast.create.positive({
-                        html: `Affiliate has been successfully upated.`
-                    })
-                }
-                this.isProcessing = false
-                this.isAffiliateListLoaded = true
-            }).catch(error => {
-                this.isProcessing = false
-                this.isAffiliateListLoaded = true
-            })
+            this.$v.affiliate.$touch();
+            if (!this.$v.affiliate.$error) {
+                this.isProcessing = true
+                this.isAffiliateListLoaded = false
+                HTTP.put(CONFIG.API.affiliates, this.affiliate).then(response => {
+                    if (response) {
+                        this.$refs.editAffiliateModal.close()
+                        this.affiliates[this.selectedAffiliate.index] = this.affiliate
+                        this.setAffiliates(this.affiliates)
+                        Toast.create.positive({
+                            html: `Affiliate has been successfully upated.`
+                        })
+                    }
+                    this.isProcessing = false
+                    this.isAffiliateListLoaded = true
+                }).catch(error => {
+                    this.isProcessing = false
+                    this.isAffiliateListLoaded = true
+                })
+            }
         },
         refresh(done) {
             HTTP.get(CONFIG.API.affiliates, []).then(response => {
