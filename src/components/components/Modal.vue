@@ -1,7 +1,7 @@
 <template>
     <q-modal ref="modalComponent" class="minimized" :noEscDismiss="closeOnEscape" :noBackdropDismiss="closeOnOutsideClick">
         <div class="content">
-            <div class="header" :class="{'header-align-start' : modalHeader && !showCloseButton, 'header-align-end': !modalHeader && showCloseButton, 'header-align-space-between': modalHeader && showCloseButton}">
+            <div class="modal-header" :class="{'header-align-start' : modalHeader && !showCloseButton, 'header-align-end': !modalHeader && showCloseButton, 'header-align-space-between': modalHeader && showCloseButton}">
                 <div v-if="modalHeader">
                     <b>{{ modalHeader }}</b>
                 </div>
@@ -11,11 +11,11 @@
                     </button>
                 </div>
             </div>
-            <div class="body">
+            <div class="modal-body">
                 <slot>
                 </slot>
             </div>
-            <div class="row footer">
+            <div class="row modal-footer">
                 <div class="auto">
                     <button class="primary small round clear modal-actions" :disabled="disableButtons" @click="cancel()">
                         {{ cancelLabel }}
@@ -33,7 +33,7 @@
 </template>
 
 <style scoped>
-.body {
+.modal-body {
     padding: 15px 0;
 }
 
@@ -61,16 +61,17 @@
     padding: 20px;
 }
 
-.footer {
+.modal-footer {
     text-align: center;
 }
 
-.header {
+.modal-header {
     display: flex;
     align-items: center;
     font-weight: normal;
     font-size: 15px;
     width: 100%;
+    padding: 0;
 }
 
 .header-align-start {
