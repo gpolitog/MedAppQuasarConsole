@@ -22,7 +22,7 @@
             <card-panel sectionHeader="Affiliates List" :showSpinner="!isAffiliateListLoaded">
                 <q-data-table :data="affiliates" :config="config" :columns="columns" @refresh="refresh" v-if="isAffiliateListLoaded">
                     <template slot="selection" scope="selection">
-                        <button class="primary clear" @click.prevent="editAffiliate(selection)">
+                        <button class="primary clear" @click.prevent="openEditAffiliateModal(selection)">
                             <i>edit</i>
                         </button>
                     </template>
@@ -40,6 +40,21 @@
                         <input class="full-width" :disabled="isProcessing" v-model="newAffiliate.affiliateCode">
                         <label>Affiliate Code</label>
                         <p class="error-msg" v-if="$v.newAffiliate.affiliateCode.$error && !$v.newAffiliate.affiliateCode.required">Affiliate Code is required!</p>
+                    </div>
+                </form>
+            </modal-component>
+    
+            <modal-component ref="editAffiliateModal" modalHeader="Edit Affiliate" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onSubmit="editAffiliate()" :disableButtons="isProcessing" :showSpinner="isProcessing">
+                <form>
+                    <div class="stacked-label">
+                        <input class="full-width" :disabled="isProcessing" v-model="affiliate.affiliateName">
+                        <label class="input-label-error">Affiliate Name</label>
+                        <p class="error-msg" v-if="$v.affiliate.affiliateName.$error && !$v.affiliate.affiliateName.required">Affiliate Name is required!</p>
+                    </div>
+                    <div class="stacked-label">
+                        <input class="full-width" :disabled="isProcessing" v-model="affiliate.affiliateCode">
+                        <label>Affiliate Code</label>
+                        <p class="error-msg" v-if="$v.affiliate.affiliateCode.$error && !$v.affiliate.affiliateCode.required">Affiliate Code is required!</p>
                     </div>
                 </form>
             </modal-component>
@@ -126,6 +141,13 @@ export default {
             ],
             isProcessing: false,
             newAffiliate: {
+                id: null,
+                affiliateCode: '',
+                affiliateName: ''
+            },
+            selectedAffiliate: null,
+            affiliate: {
+                id: null,
                 affiliateCode: '',
                 affiliateName: ''
             },
@@ -135,6 +157,10 @@ export default {
     },
     validations: {
         newAffiliate: {
+            affiliateCode: { required },
+            affiliateName: { required }
+        },
+        affiliate: {
             affiliateCode: { required },
             affiliateName: { required }
         }
@@ -153,7 +179,9 @@ export default {
                         Toast.create.positive({
                             html: `Affiliate has been successfully created.`
                         })
-
+                        this.newAffiliate.id = response.result
+                        this.affiliates.push(this.newAffiliate)
+                        this.setAffiliates(this.affiliates)
                     }
                     this.isProcessing = false
                 }).catch(error => {
@@ -163,6 +191,7 @@ export default {
         },
         clearNewAffiliateObject() {
             this.newAffiliate = {
+                id: null,
                 affiliateCode: '',
                 affiliateName: ''
             }
@@ -172,8 +201,29 @@ export default {
             this.clearNewAffiliateObject()
             this.$refs.createAffiliateModal.open()
         },
-        editAffiliate(affiliate) {
-            console.log(JSON.stringify(affiliate))
+        openEditAffiliateModal(affiliate) {
+            this.$v.affiliate.$reset()
+            this.getSelectedAffiliateInfo(affiliate)
+            this.$refs.editAffiliateModal.open()
+        },
+        editAffiliate() {
+            this.isProcessing = true
+            this.isAffiliateListLoaded = false
+            HTTP.put(CONFIG.API.affiliates, this.affiliate).then(response => {
+                if (response) {
+                    this.$refs.editAffiliateModal.close()
+                    this.affiliates[this.selectedAffiliate.index] = this.affiliate
+                    this.setAffiliates(this.affiliates)
+                    Toast.create.positive({
+                        html: `Affiliate has been successfully upated.`
+                    })
+                }
+                this.isProcessing = false
+                this.isAffiliateListLoaded = true
+            }).catch(error => {
+                this.isProcessing = false
+                this.isAffiliateListLoaded = true
+            })
         },
         refresh(done) {
             HTTP.get(CONFIG.API.affiliates, []).then(response => {
@@ -190,6 +240,10 @@ export default {
             this.affiliates = affiliates ? affiliates : []
             this.$store.dispatch('setAffiliates', this.affiliates)
             this.$store.dispatch('affiliatesLoaded', true)
+        },
+        getSelectedAffiliateInfo(affiliate) {
+            this.selectedAffiliate = affiliate.rows[0]
+            Object.assign(this.affiliate, this.selectedAffiliate.data)
         }
     }
 }
