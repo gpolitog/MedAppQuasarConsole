@@ -22,10 +22,10 @@
             <card-panel sectionHeader="Accounts List" :showSpinner="!isAccountListLoaded">
                 <q-data-table :data="accounts" :config="config" :columns="columns" @refresh="refresh" v-if="isAccountListLoaded">
                     <template slot="selection" scope="selection">
-                        <button class="primary clear" @click.prevent="editAccount(selection)">
+                        <button class="primary clear" @click.prevent="openEditAccountModal(selection)">
                             <i>edit</i>
                         </button>
-                        <button class="primary clear" @click.prevent="resetPassword(selection)">
+                        <button class="primary clear" @click.prevent="openResetPasswordModal(selection)">
                             <i>redo</i>
                         </button>
                     </template>
@@ -36,17 +36,32 @@
         <modal-component ref="createAccountModal" modalHeader="Create Account" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onSubmit="createAccount()" :disableButtons="isProcessing" :showSpinner="isProcessing">
             <form>
                 <div class="stacked-label">
-                    <input type="email" required class="full-width" :disabled="isProcessing" v-model="newAccount.username">
+                    <input type="email" class="full-width" :disabled="isProcessing" v-model="newAccount.username">
                     <label class="input-label-error">Username</label>
                     <p class="error-msg" v-if="$v.newAccount.username.$error && !$v.newAccount.username.required">Username is required!</p>
                     <p class="error-msg" v-if="$v.newAccount.username.$error && !$v.newAccount.username.email">Invalid email format!</p>
                 </div>
                 <div class="stacked-label">
-                    <input type="number" required class="full-width" :disabled="isProcessing" v-model="newAccount.noOfClinics">
+                    <input type="number" class="full-width" :disabled="isProcessing" v-model="newAccount.noOfClinics">
                     <label>Number Of Clinics</label>
                     <p class="error-msg" v-if="$v.newAccount.noOfClinics.$error && !$v.newAccount.noOfClinics.required">Number Of Clinics is required!</p>
                 </div>
             </form>
+        </modal-component>
+    
+        <modal-component ref="editAccountModal" modalHeader="Edit Account" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onSubmit="editAccount()" :disableButtons="isProcessing" :showSpinner="isProcessing">
+            <form>
+                <div class="stacked-label">
+                    <input type="email" class="full-width" :disabled="true" v-model="account.username">
+                    <label class="input-label-error">Username</label>
+                </div>
+                <q-select type="radio" class="lovs full-width" :disable="true" v-model="account.role" label="Role" :options="role"></q-select>
+                <q-select type="radio" class="lovs full-width" :disable="isProcessing" v-model="account.status" label="Status" :options="status"></q-select>
+            </form>
+        </modal-component>
+    
+        <modal-component ref="resetPasswordModal" modalHeader="Reset Password" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onSubmit="resetPassword()" :disableButtons="isProcessing" :showSpinner="isProcessing">
+            <p>Reset Password of {{ account.username }}?</p>
         </modal-component>
     </page-content>
 </template>
@@ -58,6 +73,10 @@
     .button-centered {
         text-align: center;
     }
+}
+
+.test {
+    display:inline-block;
 }
 </style>
 
@@ -128,14 +147,14 @@ export default {
                     label: 'Role',
                     field: 'role',
                     format(value, row) {
-                        return CONSTANTS.LOVS.role[value - 1]
+                        return CONSTANTS.LOVS.role[value - 1].label
                     }
                 },
                 {
                     label: 'Status',
                     field: 'status',
                     format(value, row) {
-                        return CONSTANTS.LOVS.status[value - 1]
+                        return CONSTANTS.LOVS.status[value].label
                     }
                 }
             ],
@@ -145,8 +164,17 @@ export default {
                 role: 2,
                 noOfClinics: null
             },
+            selectedAccount: null,
+            account: {
+                userId: null,
+                username: '',
+                role: null,
+                status: null
+            },
             accounts: [],
-            isAccountListLoaded: false
+            isAccountListLoaded: false,
+            role: CONSTANTS.LOVS.role,
+            status: CONSTANTS.LOVS.status
         }
     },
     validations: {
@@ -162,15 +190,17 @@ export default {
         createAccount() {
             this.$v.newAccount.$touch();
             if (!this.$v.newAccount.$error) {
+                this.isProcessing = true
                 HTTP.post(CONFIG.API.users, this.newAccount).then(response => {
-                    this.isProcessing = false
                     if (response) {
                         this.$refs.createAccountModal.close()
+                        this.accounts.push(response.result)
+                        this.setAccounts(this.accounts)
                         Toast.create.positive({
                             html: `Account has been successfully created. Pre-generated password has been sent.`
                         })
                     }
-                    this.isProcessing = true
+                    this.isProcessing = false
                 }).catch(error => {
                     this.isProcessing = false
                 })
@@ -188,11 +218,46 @@ export default {
             this.clearNewAccountObject()
             this.$refs.createAccountModal.open()
         },
-        editAccount(account) {
-            console.log('edit => ' + JSON.stringify(account));
+        editAccount() {
+            this.isProcessing = true
+            this.isAccountListLoaded = false
+            HTTP.put(CONFIG.API.users, this.account).then(response => {
+                if (response) {
+                    this.$refs.editAccountModal.close()
+                    this.accounts[this.selectedAccount.index] = this.account
+                    this.setAccounts(this.accounts)
+                    Toast.create.positive({
+                        html: `Account has been successfully upated.`
+                    })
+                }
+                this.isProcessing = false
+                this.isAccountListLoaded = true
+            }).catch(error => {
+                this.isProcessing = false
+                this.isAccountListLoaded = true
+            })
         },
-        resetPassword(account) {
-            console.log('edit => ' + JSON.stringify(account));
+        openEditAccountModal(account) {
+            this.getSelectedAccountInfo(account)
+            this.$refs.editAccountModal.open()
+        },
+        resetPassword() {
+            this.isProcessing = true
+            HTTP.put(CONFIG.API.resetPassword, this.account.username).then(response => {
+                if (response) {
+                    this.$refs.resetPasswordModal.close()
+                    Toast.create.positive({
+                        html: `Password has been successfully reset. Pre-generated password has been sent.`
+                    })
+                }
+                this.isProcessing = false
+            }).catch(error => {
+                this.isProcessing = false
+            })
+        },
+        openResetPasswordModal(account) {
+            this.getSelectedAccountInfo(account)
+            this.$refs.resetPasswordModal.open()
         },
         refresh(done) {
             HTTP.get(CONFIG.API.users, []).then(response => {
@@ -211,6 +276,10 @@ export default {
             this.accounts = accounts ? accounts : []
             this.$store.dispatch('setAccounts', this.accounts)
             this.$store.dispatch('accountsLoaded', true)
+        },
+        getSelectedAccountInfo(account) {
+            this.selectedAccount = account.rows[0]
+            Object.assign(this.account, this.selectedAccount.data)
         }
     }
 }

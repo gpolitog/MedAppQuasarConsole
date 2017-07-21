@@ -32,12 +32,12 @@
             <modal-component ref="createAffiliateModal" modalHeader="Create Affiliate" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onSubmit="createAffiliate()" :disableButtons="isProcessing" :showSpinner="isProcessing">
                 <form>
                     <div class="stacked-label">
-                        <input required class="full-width" :disabled="isProcessing" v-model="newAffiliate.affiliateName">
+                        <input class="full-width" :disabled="isProcessing" v-model="newAffiliate.affiliateName">
                         <label class="input-label-error">Affiliate Name</label>
                         <p class="error-msg" v-if="$v.newAffiliate.affiliateName.$error && !$v.newAffiliate.affiliateName.required">Affiliate Name is required!</p>
                     </div>
                     <div class="stacked-label">
-                        <input required class="full-width" :disabled="isProcessing" v-model="newAffiliate.affiliateCode">
+                        <input class="full-width" :disabled="isProcessing" v-model="newAffiliate.affiliateCode">
                         <label>Affiliate Code</label>
                         <p class="error-msg" v-if="$v.newAffiliate.affiliateCode.$error && !$v.newAffiliate.affiliateCode.required">Affiliate Code is required!</p>
                     </div>

@@ -3,10 +3,10 @@
         <div class="content">
             <div class="header" :class="{'header-align-start' : modalHeader && !showCloseButton, 'header-align-end': !modalHeader && showCloseButton, 'header-align-space-between': modalHeader && showCloseButton}">
                 <div v-if="modalHeader">
-                    {{ modalHeader }}
+                    <b>{{ modalHeader }}</b>
                 </div>
                 <div class="pointer" v-if="showCloseButton">
-                    <button class="clear " :disabled="disableButtons" @click="exit()">
+                    <button class="clear modal-close" :disabled="disableButtons" @click="exit()">
                         <i>clear</i>
                     </button>
                 </div>
@@ -17,7 +17,7 @@
             </div>
             <div class="row footer">
                 <div class="auto">
-                    <button class="primary small round clear" :disabled="disableButtons" @click="cancel()">
+                    <button class="primary small round clear modal-actions" :disabled="disableButtons" @click="cancel()">
                         {{ cancelLabel }}
                     </button>
                 </div>
@@ -37,7 +37,7 @@
     padding: 15px 0;
 }
 
-.body-small {
+/*.body-small {
     min-width: 20vw;
 }
 
@@ -47,10 +47,14 @@
 
 .body-large {
     min-width: 80vw;
-}
+}*/
 
 .modal-actions {
     min-width: 80px;
+}
+
+.modal-close {
+    padding: 0;
 }
 
 .content {

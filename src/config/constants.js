@@ -1,16 +1,40 @@
 export default {
     LOVS: {
         role: [
-            'Doctor',
-            'Assistant'
+            {
+                label: 'Doctor',
+                value: 1
+            },
+            {
+                label: 'Assistant',
+                value: 2
+            }
         ],
         status: [
-            'Inactive',
-            'Incomplete Registration - Update password',
-            'Incomplete Registration - Update Profile',
-            'Incomplete Registration - Update Profile Picture',
-            'Incomplete Registration - Update Clinic',
-            'Active'
+            {
+                label: 'Inactive',
+                value: 0
+            },
+            {
+                label: 'Registration - Update password',
+                value: 1
+            },
+            {
+                label: 'Registration - Update Profile',
+                value: 2
+            },
+            {
+                label: 'Registration - Update Profile Picture',
+                value: 3
+            },
+            {
+                label: 'Registration - Update Clinic',
+                value: 4
+            },
+            {
+                label: 'Active',
+                value: 5
+            }
         ]
     }
 }

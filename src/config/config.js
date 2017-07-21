@@ -3,6 +3,7 @@ export default {
         authenticate: `/users/authenticate`,
         affiliates: `/affiliates`,
         users: `/users`,
+        resetPassword: `/users/passwdres`
     },
     STORAGE: {
         token: `kento`
