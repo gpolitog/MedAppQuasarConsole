@@ -161,20 +161,20 @@ export default {
             isProcessing: false,
             newAccount: {
                 username: '',
-                role: 2,
-                noOfClinics: null
+                role: 1,
+                noOfClinics: ''
             },
             selectedAccount: null,
             account: {
-                userId: null,
+                userId: 0,
                 username: '',
-                role: null,
-                status: null
+                role: 0,
+                status: 0
             },
             accounts: [],
             isAccountListLoaded: false,
             role: CONSTANTS.LOVS.role,
-            status: CONSTANTS.LOVS.status
+            status: Object.assign([], CONSTANTS.LOVS.status)
         }
     },
     validations: {
@@ -230,7 +230,11 @@ export default {
         editAccount() {
             this.isProcessing = true
             this.isAccountListLoaded = false
-            HTTP.put(CONFIG.API.users, this.account).then(response => {
+            const payload = {
+                userId: this.account.userId,
+                status: this.account.status
+            }
+            HTTP.put(CONFIG.API.changeStatus, payload).then(response => {
                 if (response) {
                     this.$refs.editAccountModal.close()
                     this.accounts[this.selectedAccount.index] = this.account
@@ -290,6 +294,11 @@ export default {
         getSelectedAccountInfo(account) {
             this.selectedAccount = account.rows[0]
             Object.assign(this.account, this.selectedAccount.data)
+            this.status = Object.assign([], CONSTANTS.LOVS.status)
+            
+            if(this.account.role === 2) {
+                this.status.splice(4,1)
+            }
         }
     }
 }

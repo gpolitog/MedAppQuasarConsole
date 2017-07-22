@@ -17,12 +17,12 @@
             </div>
             <div class="row modal-footer">
                 <div class="auto">
-                    <button class="primary small round clear modal-actions" :disabled="disableButtons" @click="cancel()">
+                    <button class="primary small round clear modal-actions" :disabled="disableButtons" @click.prevent="cancel()">
                         {{ cancelLabel }}
                     </button>
                 </div>
                 <div class="auto">
-                    <button class="primary small round modal-actions" :disabled=" disableButtons " @click="submit() ">
+                    <button class="primary small round modal-actions" :disabled=" disableButtons " @click.prevent="submit() ">
                         {{ doneLabel }}
                         <spinner class="button-spinner" color="white" :size="20" v-if="showSpinner"></spinner>
                     </button>
@@ -105,11 +105,9 @@ export default {
             this.$emit('onSubmit')
         },
         cancel() {
-            this.$emit('onCancel')
             this.$refs.modalComponent.close()
         },
         exit() {
-            this.$emit('onExit')
             this.$refs.modalComponent.close()
         }
     },
