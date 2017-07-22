@@ -209,7 +209,7 @@ export default {
         clearNewAccountObject() {
             this.newAccount = {
                 username: '',
-                role: 2,
+                role: 1,
                 noOfClinics: null
             }
             this.$v.newAccount.$reset()
