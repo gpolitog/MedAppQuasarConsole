@@ -42,9 +42,9 @@
                     <p class="error-msg" v-if="$v.newAccount.username.$error && !$v.newAccount.username.email">Invalid email format!</p>
                 </div>
                 <div class="stacked-label">
-                    <input type="number" class="full-width" :disabled="isProcessing" v-model="newAccount.noOfClinics">
+                    <input type="number" class="full-width" :disabled="isProcessing" v-model="newAccount.noOfClinic">
                     <label>Number Of Clinics</label>
-                    <p class="error-msg" v-if="$v.newAccount.noOfClinics.$error && !$v.newAccount.noOfClinics.required">Number Of Clinics is required!</p>
+                    <p class="error-msg" v-if="$v.newAccount.noOfClinic.$error && !$v.newAccount.noOfClinic.required">Number Of Clinics is required!</p>
                 </div>
             </form>
         </modal-component>
@@ -162,7 +162,7 @@ export default {
             newAccount: {
                 username: '',
                 role: 1,
-                noOfClinics: ''
+                noOfClinic: ''
             },
             selectedAccount: null,
             account: {
@@ -180,7 +180,7 @@ export default {
     validations: {
         newAccount: {
             username: { required, email },
-            noOfClinics: { required }
+            noOfClinic: { required }
         }
     },
     computed: {
@@ -210,7 +210,7 @@ export default {
             this.newAccount = {
                 username: '',
                 role: 1,
-                noOfClinics: null
+                noOfClinic: ''
             }
             this.$v.newAccount.$reset()
         },
