@@ -21,14 +21,15 @@ export default new VueRouter({
    * build publicPath back to '' so Cordova builds work again.
    */
   mode: 'history',
-  routes: [
-    {
+  routes: [{
       path: '/',
       redirect: '/login'
     },
     {
       path: '/login',
-      meta: { name: 'Login' },
+      meta: {
+        name: 'Login'
+      },
       // FOR LAZY LOADING
       // component: load('views/Login'),
       component: function (resolve) {
@@ -37,7 +38,10 @@ export default new VueRouter({
     },
     {
       path: '/dashboard',
-      meta: { name: 'Dashboard', requiresAuth: true },
+      meta: {
+        name: 'Dashboard',
+        requiresAuth: true
+      },
       // FOR LAZY LOADING
       // component: load('views/Dashboard'),
       component: function (resolve) {
@@ -45,9 +49,11 @@ export default new VueRouter({
       }
     },
     {
-      path:
-      '/accounts',
-      meta: { name: 'Accounts', requiresAuth: true },
+      path: '/accounts',
+      meta: {
+        name: 'Accounts',
+        requiresAuth: true
+      },
       // FOR LAZY LOADING
       // component: load('views/Accounts'),
       component: function (resolve) {
@@ -56,11 +62,26 @@ export default new VueRouter({
     },
     {
       path: '/affiliates',
-      meta: { name: 'Affiliates', requiresAuth: true },
+      meta: {
+        name: 'Affiliates',
+        requiresAuth: true
+      },
       // FOR LAZY LOADING
       // component: load('views/Affiliates'),
       component: function (resolve) {
         require(['components/views/Affiliates.vue'], resolve)
+      }
+    },
+    {
+      path: '/notifications',
+      meta: {
+        name: 'Notifications',
+        requiresAuth: true
+      },
+      // FOR LAZY LOADING
+      // component: load('views/Notifications'),
+      component: function (resolve) {
+        require(['components/views/Notifications.vue'], resolve)
       }
     },
     {
