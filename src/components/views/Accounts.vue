@@ -26,8 +26,8 @@
                             <i>edit</i>
                         </button>
                         <!-- <button class="primary clear" v-if="selection && selection.rows[0] && selection.rows[0].data.role === 1" @click.prevent="openEditAccountModal(selection)">
-                            <i>business</i>
-                        </button> -->
+                                                                                            <i>business</i>
+                                                                                        </button> -->
                         <button class="primary clear" @click.prevent="openResetPasswordModal(selection)">
                             <i>redo</i>
                         </button>
@@ -45,7 +45,7 @@
                     <p class="error-msg" v-if="$v.newAccount.username.$error && !$v.newAccount.username.email">Invalid email format!</p>
                 </div>
                 <div class="stacked-label">
-                    <input type="number" class="full-width" :disabled="isProcessing" v-model="newAccount.noOfClinic">
+                    <input type="tel" class="full-width" :disabled="isProcessing" v-model="newAccount.noOfClinic" @keypress="isNumber(event)">
                     <label>Number Of Clinics</label>
                     <p class="error-msg" v-if="$v.newAccount.noOfClinic.$error && !$v.newAccount.noOfClinic.required">Number Of Clinics is required!</p>
                 </div>
@@ -59,7 +59,7 @@
                     <label class="input-label-error">Username</label>
                 </div>
                 <div class="full-width">
-                    <q-select type="radio" class="full-width" disable="true" v-model="account.role" label="Role" :options="role"></q-select>
+                    <q-select type="radio" class="full-width" :disable="true" v-model="account.role" label="Role" :options="role"></q-select>
                 </div>
                 <div class="full-width">
                     <q-select type="radio" class="full-width" :disable="isProcessing" v-model="account.status" label="Status" :options="status"></q-select>
@@ -190,6 +190,15 @@ export default {
         ...mapGetters(['getIsAccountsLoaded', 'getAccounts'])
     },
     methods: {
+        isNumber(evt) {
+            evt = (evt) ? evt : window.event
+            var charCode = (evt.which) ? evt.which : evt.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                evt.preventDefault()
+            } else {
+                return true
+            }
+        },
         createAccount() {
             this.$v.newAccount.$touch();
             if (!this.$v.newAccount.$error) {
