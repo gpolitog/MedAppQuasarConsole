@@ -48,6 +48,7 @@
                     <input type="number" class="full-width" :disabled="isProcessing" v-model="newAccount.noOfClinic" @keypress="isNumber(event)">
                     <label>Number Of Clinics</label>
                     <p class="error-msg" v-if="$v.newAccount.noOfClinic.$error && !$v.newAccount.noOfClinic.required">Number Of Clinics is required!</p>
+                    <p class="error-msg" v-if="$$v.newAccount.noOfClinic.$error && !$$v.newAccount.noOfClinic.numeric">Number Of Clinics is not a number!</p>
                 </div>
             </form>
         </modal-component>
@@ -198,7 +199,7 @@ export default {
     validations: {
         newAccount: {
             username: { required, email },
-            noOfClinic: { required }
+            noOfClinic: { required, numeric }
         },
         noOfClinic: { required, numeric }
     },
