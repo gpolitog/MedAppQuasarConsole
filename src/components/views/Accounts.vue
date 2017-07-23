@@ -25,6 +25,9 @@
                         <button class="primary clear" @click.prevent="openEditAccountModal(selection)">
                             <i>edit</i>
                         </button>
+                        <!-- <button class="primary clear" v-if="selection && selection.rows[0] && selection.rows[0].data.role === 1" @click.prevent="openEditAccountModal(selection)">
+                            <i>business</i>
+                        </button> -->
                         <button class="primary clear" @click.prevent="openResetPasswordModal(selection)">
                             <i>redo</i>
                         </button>
@@ -55,8 +58,12 @@
                     <input type="email" class="full-width" :disabled="true" v-model="account.username">
                     <label class="input-label-error">Username</label>
                 </div>
-                <q-select type="radio" class="lovs full-width" :disable="true" v-model="account.role" label="Role" :options="role"></q-select>
-                <q-select type="radio" class="lovs full-width" :disable="isProcessing" v-model="account.status" label="Status" :options="status"></q-select>
+                <div class="full-width">
+                    <q-select type="radio" class="full-width" disable="true" v-model="account.role" label="Role" :options="role"></q-select>
+                </div>
+                <div class="full-width">
+                    <q-select type="radio" class="full-width" :disable="isProcessing" v-model="account.status" label="Status" :options="status"></q-select>
+                </div>
             </form>
         </modal-component>
     
@@ -73,10 +80,6 @@
     .button-centered {
         text-align: center;
     }
-}
-
-.test {
-    display:inline-block;
 }
 </style>
 
@@ -295,9 +298,9 @@ export default {
             this.selectedAccount = account.rows[0]
             Object.assign(this.account, this.selectedAccount.data)
             this.status = Object.assign([], CONSTANTS.LOVS.status)
-            
-            if(this.account.role === 2) {
-                this.status.splice(4,1)
+
+            if (this.account.role === 2) {
+                this.status.splice(4, 1)
             }
         }
     }

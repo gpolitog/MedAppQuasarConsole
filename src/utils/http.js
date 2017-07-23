@@ -5,8 +5,8 @@ import CONFIG from '../config/config'
 import STORAGE from './storage'
 
 const HTTP = axios.create({
-    // baseURL: `http://localhost:8080/medappws`
-    baseURL: `https://dqmedapp.herokuapp.com`
+    baseURL: `http://localhost:8080/medappws`
+    // baseURL: `https://dqmedapp.herokuapp.com`
 })
 
 let requestSuccessHandler = config => {
