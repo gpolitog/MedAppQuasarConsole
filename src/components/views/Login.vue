@@ -10,12 +10,12 @@
         </div>
         <form novalidate>
           <div class="stacked-label">
-            <input class="full-width" :disabled="isProcessing" v-model="loginForm.username">
+            <input class="full-width" :disabled="isProcessing" v-model.trim="loginForm.username">
             <label class="error">Username</label>
             <span class="error-msg" v-if="$v.loginForm.username.$error && !$v.loginForm.username.required">Username is required!</span>
           </div>
           <div class="stacked-label">
-            <input type="password" class="full-width" :disabled="isProcessing" v-model="loginForm.password">
+            <input type="password" class="full-width" :disabled="isProcessing" v-model.trim="loginForm.password">
             <label>Password</label>
             <span class="error-msg" v-if="$v.loginForm.password.$error && !$v.loginForm.password.required">Password is required!</span>
           </div>

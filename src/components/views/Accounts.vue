@@ -39,7 +39,7 @@
         <modal-component ref="createAccountModal" modalHeader="Create Account" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onSubmit="createAccount()" :disableButtons="isProcessing" :showButtonSpinner="isProcessing">
             <form>
                 <div class="stacked-label">
-                    <input type="email" class="full-width" :disabled="isProcessing" v-model="newAccount.username">
+                    <input type="email" class="full-width" :disabled="isProcessing" v-model.trim="newAccount.username">
                     <label class="input-label-error">Username</label>
                     <p class="error-msg" v-if="$v.newAccount.username.$error && !$v.newAccount.username.required">Username is required!</p>
                     <p class="error-msg" v-if="$v.newAccount.username.$error && !$v.newAccount.username.email">Invalid email format!</p>

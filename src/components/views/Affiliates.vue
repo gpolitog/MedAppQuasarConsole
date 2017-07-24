@@ -29,30 +29,30 @@
                 </q-data-table>
             </card-panel>
     
-            <modal-component ref="createAffiliateModal" modalHeader="Create Affiliate" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onSubmit="createAffiliate()" :disableButtons="isProcessing" :showSpinner="isProcessing">
+            <modal-component ref="createAffiliateModal" modalHeader="Create Affiliate" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onSubmit="createAffiliate()" :disableButtons="isProcessing" :showButtonSpinner="isProcessing">
                 <form>
                     <div class="stacked-label">
-                        <input class="full-width" :disabled="isProcessing" v-model="newAffiliate.affiliateName">
+                        <input class="full-width" :disabled="isProcessing" v-model.trim="newAffiliate.affiliateName">
                         <label class="input-label-error">Affiliate Name</label>
                         <p class="error-msg" v-if="$v.newAffiliate.affiliateName.$error && !$v.newAffiliate.affiliateName.required">Affiliate Name is required!</p>
                     </div>
                     <div class="stacked-label">
-                        <input class="full-width" :disabled="isProcessing" v-model="newAffiliate.affiliateCode">
+                        <input class="full-width" :disabled="isProcessing" v-model.trim="newAffiliate.affiliateCode">
                         <label>Affiliate Code</label>
                         <p class="error-msg" v-if="$v.newAffiliate.affiliateCode.$error && !$v.newAffiliate.affiliateCode.required">Affiliate Code is required!</p>
                     </div>
                 </form>
             </modal-component>
     
-            <modal-component ref="editAffiliateModal" modalHeader="Edit Affiliate" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onSubmit="editAffiliate()" :disableButtons="isProcessing" :showSpinner="isProcessing">
+            <modal-component ref="editAffiliateModal" modalHeader="Edit Affiliate" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onSubmit="editAffiliate()" :disableButtons="isProcessing" :showButtonSpinner="isProcessing">
                 <form>
                     <div class="stacked-label">
-                        <input class="full-width" :disabled="isProcessing" v-model="affiliate.affiliateName">
+                        <input class="full-width" :disabled="isProcessing" v-model.trim="affiliate.affiliateName">
                         <label class="input-label-error">Affiliate Name</label>
                         <p class="error-msg" v-if="$v.affiliate.affiliateName.$error && !$v.affiliate.affiliateName.required">Affiliate Name is required!</p>
                     </div>
                     <div class="stacked-label">
-                        <input class="full-width" :disabled="isProcessing" v-model="affiliate.affiliateCode">
+                        <input class="full-width" :disabled="isProcessing" v-model.trim="affiliate.affiliateCode">
                         <label>Affiliate Code</label>
                         <p class="error-msg" v-if="$v.affiliate.affiliateCode.$error && !$v.affiliate.affiliateCode.required">Affiliate Code is required!</p>
                     </div>
