@@ -30,7 +30,7 @@
                                 <td data-th="Use Tag">
                                     <q-toggle v-model="tag.used" :disable="tag.key === 'clinicId' || isProcessing" @input="toggleTag(tag)"></q-toggle>
                                 </td>
-                                <td data-th=">Notification Tag">
+                                <td data-th="Notification Tag">
                                     {{ tag.key }}
                                 </td>
                                 <td data-th="Send To">
