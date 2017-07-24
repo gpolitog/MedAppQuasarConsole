@@ -23,6 +23,9 @@
                     <template slot="selection" scope="selection">
                         <button class="primary clear" @click.prevent="openEditAffiliateModal(selection)">
                             <i>edit</i>
+                            <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, -10]">
+                                <strong>Edit Affiliate</strong>
+                            </q-tooltip>
                         </button>
                     </template>
                 </q-data-table>

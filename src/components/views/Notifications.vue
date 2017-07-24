@@ -2,13 +2,13 @@
     <page-content :centerAligned="false">
         <div class="sm-width-4of5 md-width-4of5 gt-md-width-4of5">
             <card-panel sectionHeader="Notifications">
-                Here the administrator can manually send notification by inputting the message and notification tags. Notification tags act as a filters. This determine who can receive the notification.
+                Here the administrator can manually send notification by inputting the message and notification tags. Notification tags act as a filters. This determine who can receive the notification. If there are no tags provided, notifications are sent to all subscribers.
                 <br>
                 <br> Notification tags consist of the following: clinic id, affiliaton id, and user role.
             </card-panel>
     
             <card-panel sectionHeader="Push Notification" :showSpinner="!isAffiliateListLoaded">
-                Notifications will be sent accordingly based on the notification tags used.
+                Toggle the notification tag to allow usage.
                 <br>
                 <br>
                 <form>
@@ -17,45 +17,42 @@
                         <label>Message</label>
                         <span class="error-msg" v-if="$v.msg.$error && !$v.msg.required">Message is required!</span>
                     </div>
-                    <div class="tag-container">
-                        <table class="q-table full-width responsive highlight loose">
-                            <thead>
-                                <tr>
-                                    <th>Use Tag</th>
-                                    <th>Notification Tag</th>
-                                    <th>Send To</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="tag in tags">
-                                    <td data-th="Use Tag">
-                                        <q-toggle v-model="tag.used" :disable="tag.key === 'clinicId' || isProcessing" @input="toggleTag(tag)"></q-toggle>
-                                    </td>
-                                    <td data-th=">Notification Tag">
-                                        {{ tag.key }}
-                                    </td>
-                                    <td data-th="Send To">
-                                        <div v-if="tag.key === 'clinicId'">
-                                            ON GOING DEVELOPMENT
+                    <table class="q-table full-width responsive highlight loose">
+                        <thead>
+                            <tr>
+                                <th>Toogle</th>
+                                <th>Notification Tag</th>
+                                <th>Send To</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="tag in tags">
+                                <td data-th="Use Tag">
+                                    <q-toggle v-model="tag.used" :disable="tag.key === 'clinicId' || isProcessing" @input="toggleTag(tag)"></q-toggle>
+                                </td>
+                                <td data-th=">Notification Tag">
+                                    {{ tag.key }}
+                                </td>
+                                <td data-th="Send To">
+                                    <div v-if="tag.key === 'clinicId'">
+                                        ON GOING DEVELOPMENT
+                                    </div>
+                                    <div v-if="tag.key === 'affilliationId'">
+                                        <div class="full-width">
+                                            <q-select type="radio" class="full-width" v-model="tag.value" label="Affiliate" :options="affiliates" :disable="!tag.used || isProcessing" @input="selectAffiliate(tag.value)"></q-select>
+                                            <span class="error-msg" v-if="affiliateTagHasError">Affiliate is required!</span>
                                         </div>
-                                        <div v-if="tag.key === 'affilliationId'">
-                                            <div class="full-width">
-                                                <q-select type="radio" class="full-width" v-model="tag.value" label="Affiliate" :options="affiliates" :disable="!tag.used || isProcessing" @input="selectAffiliate(tag.value)"></q-select>
-                                                <span class="error-msg" v-if="affiliateTagHasError">Affiliate is required!</span>
-                                            </div>
+                                    </div>
+                                    <div v-if="tag.key === 'role'">
+                                        <div class="full-width">
+                                            <q-select type="radio" class="full-width" v-model="tag.value" label="Role" :options="role" :disable="!tag.used || isProcessing" @input="selectTag(tag.value)"></q-select>
+                                            <span class="error-msg" v-if="roleTagHasError">Role is required!</span>
                                         </div>
-                                        <div v-if="tag.key === 'role'">
-                                            <div class="full-width">
-                                                <q-select type="radio" class="full-width" v-model="tag.value" label="Role" :options="role" :disable="!tag.used || isProcessing" @input="selectTag(tag.value)"></q-select>
-                                                <span class="error-msg" v-if="roleTagHasError">Role is required!</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <span class="error-msg" v-if="noTagsSelected">Should have at least one tag used!</span>
-                    </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                     <div class="button-container button-centered">
                         <button class="primary round" :disabled="isProcessing" @click.prevent="sendNotification()">
                             Send Notification
@@ -135,7 +132,6 @@ export default {
             affiliates: [],
             isAffiliateListLoaded: false,
             isProcessing: false,
-            noTagsSelected: false,
             clinicTagHasError: false,
             affiliateTagHasError: false,
             roleTagHasError: false,
@@ -165,8 +161,6 @@ export default {
             } else if (tag.key === 'role') {
                 this.roleTagHasError = tag.used ? this.roleTagHasError : false
             }
-
-            this.noTagsSelected = false
         },
         selectClinic(value) {
             this.clinicTagHasError = value ? false : true
@@ -204,7 +198,6 @@ export default {
             const usedTags = this.tags.filter(t => t.used);
 
             if (usedTags && usedTags.length > 0) {
-                this.noTagsSelected = false
 
                 usedTags.forEach(ut => {
                     if (ut.key === 'clinicId') {
@@ -240,10 +233,9 @@ export default {
                     }
                 })
 
-                return !this.noTagsSelected && !this.clinicTagHasError && !this.affiliateTagHasError && !this.roleTagHasError
+                return !this.clinicTagHasError && !this.affiliateTagHasError && !this.roleTagHasError
             } else {
-                this.noTagsSelected = true
-                return false
+                return true
             }
         },
         checkValue(value) {

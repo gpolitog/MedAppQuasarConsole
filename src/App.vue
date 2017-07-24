@@ -29,7 +29,7 @@ body {
 }
 
 .fade-enter-active {
-  transition-delay: .25s;
+  transition-delay: 0s;
 }
 
 .fade-enter, .fade-leave-active {

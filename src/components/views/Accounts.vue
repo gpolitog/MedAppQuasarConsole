@@ -23,12 +23,21 @@
                     <template slot="selection" scope="selection">
                         <button class="primary clear" @click.prevent="openEditAccountModal(selection)">
                             <i>edit</i>
+                            <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, -10]">
+                                <strong>Edit Account</strong>
+                            </q-tooltip>
                         </button>
                         <button class="primary clear" v-if="selection && selection.rows[0] && selection.rows[0].data.role === 1" @click.prevent="openAddNoOfClinicModal(selection)">
                             <i>business</i>
+                            <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, -10]">
+                                <strong>Add Clinic</strong>
+                            </q-tooltip>
                         </button>
                         <button class="primary clear" @click.prevent="openResetPasswordModal(selection)">
                             <i>redo</i>
+                            <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, -10]">
+                                <strong>Reset Password</strong>
+                            </q-tooltip>
                         </button>
                     </template>
                 </q-data-table>
