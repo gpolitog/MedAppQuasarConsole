@@ -1,11 +1,18 @@
-var express = require('express');
-var path = require('path');
-var serveStatic = require('serve-static');
-var history = require('connect-history-api-fallback');
+const path = require('path');
+const history = require('connect-history-api-fallback');
+const express = require('express');
+const app = express();
 
-app = express();
+const forceSSL = function() {
+  return function (req, res, next) {
+    if (req.headers['x-forwarded-proto'] !== 'https') {
+      return res.redirect(['https://', req.get('Host'), req.url].join(''));
+    }
+    next();
+  }
+}
+
+app.use(forceSSL());
 app.use(history());
-app.use(serveStatic(__dirname));
-
-var port = process.env.PORT || 5000;
-app.listen(port);
+app.use(express.static(__dirname));
+app.listen(process.env.PORT || 8080);
