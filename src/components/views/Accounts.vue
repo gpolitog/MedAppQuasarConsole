@@ -5,7 +5,6 @@
                 Here What's App Doc accounts are managed. It involves creation of doctor accounts, accounts details modification and resetting of password.
                 <br>
                 <br> Assistant accounts are created by the doctor using What's App Doc.
-                </span>
             </card-panel>
     
             <card-panel sectionHeader="Create Account">
@@ -20,7 +19,7 @@
             </card-panel>
     
             <card-panel sectionHeader="Accounts List" :showSpinner="!isAccountListLoaded">
-                <q-data-table :data="accounts" :config="config" :columns="columns" @refresh="refresh" v-if="isAccountListLoaded">
+                <q-data-table :data="accounts" :config="config" :columns="columns" @refresh="refresh">
                     <template slot="selection" scope="selection">
                         <button class="primary clear" @click.prevent="openEditAccountModal(selection)">
                             <i>edit</i>

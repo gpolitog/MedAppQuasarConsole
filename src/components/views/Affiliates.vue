@@ -5,7 +5,6 @@
                 Here clinic's affiliations are managed. Affiliate is an arm of an organization or a subsidiary.
                 <br>
                 <br> Ownership of Patient records belongs to the owner of the clinic. If the clinic has an affiliation, then the records belongs to the affiliate.
-                </span>
             </card-panel>
     
             <card-panel sectionHeader="Create Affiliate">
@@ -20,7 +19,7 @@
             </card-panel>
     
             <card-panel sectionHeader="Affiliates List" :showSpinner="!isAffiliateListLoaded">
-                <q-data-table :data="affiliates" :config="config" :columns="columns" @refresh="refresh" v-if="isAffiliateListLoaded">
+                <q-data-table :data="affiliates" :config="config" :columns="columns" @refresh="refresh">
                     <template slot="selection" scope="selection">
                         <button class="primary clear" @click.prevent="openEditAffiliateModal(selection)">
                             <i>edit</i>

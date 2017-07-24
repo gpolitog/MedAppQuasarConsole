@@ -5,7 +5,8 @@ export default {
     users: `/users`,
     changeStatus: `/users/changestatus`,
     resetPassword: `/users/passwdres`,
-    getNoOfClinics: '/doctordetails/clinics'
+    getNoOfClinics: '/doctordetails/clinics',
+    createNotification: `/pushnotif/cr`
   },
   STORAGE: {
     token: `kento`

@@ -12,7 +12,7 @@
                     <div class="card-content-spinner" v-if="showSpinner">
                         <spinner color="#027BE3" :size="40"></spinner>
                     </div>
-                    <slot></slot>
+                    <slot v-if="!showSpinner"></slot>
                 </div>
             </div>
         </div>
