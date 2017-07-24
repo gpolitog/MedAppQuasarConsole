@@ -1,31 +1,36 @@
 <template>
     <q-modal ref="modalComponent" class="minimized" :noEscDismiss="closeOnEscape" :noBackdropDismiss="closeOnOutsideClick">
         <div class="content">
-            <div class="modal-header" :class="{'header-align-start' : modalHeader && !showCloseButton, 'header-align-end': !modalHeader && showCloseButton, 'header-align-space-between': modalHeader && showCloseButton}">
-                <div v-if="modalHeader">
-                    <b>{{ modalHeader }}</b>
-                </div>
-                <div class="pointer" v-if="showCloseButton">
-                    <button class="clear modal-close" :disabled="disableButtons" @click="exit()">
-                        <i>clear</i>
-                    </button>
-                </div>
+            <div class="card-content-spinner" v-if="showSpinner">
+                <spinner color="#027BE3" :size="40"></spinner>
             </div>
-            <div class="modal-body">
-                <slot>
-                </slot>
-            </div>
-            <div class="row modal-footer">
-                <div class="auto">
-                    <button class="primary small round clear modal-actions" :disabled="disableButtons" @click="cancel()">
-                        {{ cancelLabel }}
-                    </button>
+            <div v-if="!showSpinner">
+                <div class="modal-header" :class="{'header-align-start' : modalHeader && !showCloseButton, 'header-align-end': !modalHeader && showCloseButton, 'header-align-space-between': modalHeader && showCloseButton}">
+                    <div v-if="modalHeader">
+                        <b>{{ modalHeader }}</b>
+                    </div>
+                    <div class="pointer" v-if="showCloseButton">
+                        <button class="clear modal-close" :disabled="disableButtons" @click="exit()">
+                            <i>clear</i>
+                        </button>
+                    </div>
                 </div>
-                <div class="auto">
-                    <button class="primary small round modal-actions" :disabled=" disableButtons " @click="submit() ">
-                        {{ doneLabel }}
-                        <spinner class="button-spinner" color="white" :size="20" v-if="showSpinner"></spinner>
-                    </button>
+                <div class="modal-body">
+                    <slot>
+                    </slot>
+                </div>
+                <div class="row modal-footer">
+                    <div class="auto">
+                        <button class="primary small round clear modal-actions" :disabled="disableButtons" @click.prevent="cancel()">
+                            {{ cancelLabel }}
+                        </button>
+                    </div>
+                    <div class="auto">
+                        <button class="primary small round modal-actions" :disabled=" disableButtons " @click.prevent="submit() ">
+                            {{ doneLabel }}
+                            <spinner class="button-spinner" color="white" :size="20" v-if="showButtonSpinner"></spinner>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -36,6 +41,10 @@
 .modal-body {
     padding: 15px 0;
 }
+
+
+
+
 
 /*.body-small {
     min-width: 20vw;
@@ -105,11 +114,9 @@ export default {
             this.$emit('onSubmit')
         },
         cancel() {
-            this.$emit('onCancel')
             this.$refs.modalComponent.close()
         },
         exit() {
-            this.$emit('onExit')
             this.$refs.modalComponent.close()
         }
     },
@@ -139,6 +146,10 @@ export default {
             type: Boolean
         },
         showSpinner: {
+            default: false,
+            type: Boolean
+        },
+        showButtonSpinner: {
             default: false,
             type: Boolean
         }

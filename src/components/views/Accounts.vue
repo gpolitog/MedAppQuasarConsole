@@ -25,6 +25,9 @@
                         <button class="primary clear" @click.prevent="openEditAccountModal(selection)">
                             <i>edit</i>
                         </button>
+                        <button class="primary clear" v-if="selection && selection.rows[0] && selection.rows[0].data.role === 1" @click.prevent="openAddNoOfClinicModal(selection)">
+                            <i>business</i>
+                        </button>
                         <button class="primary clear" @click.prevent="openResetPasswordModal(selection)">
                             <i>redo</i>
                         </button>
@@ -33,7 +36,7 @@
             </card-panel>
         </div>
     
-        <modal-component ref="createAccountModal" modalHeader="Create Account" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onSubmit="createAccount()" :disableButtons="isProcessing" :showSpinner="isProcessing">
+        <modal-component ref="createAccountModal" modalHeader="Create Account" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onSubmit="createAccount()" :disableButtons="isProcessing" :showButtonSpinner="isProcessing">
             <form>
                 <div class="stacked-label">
                     <input type="email" class="full-width" :disabled="isProcessing" v-model="newAccount.username">
@@ -42,25 +45,42 @@
                     <p class="error-msg" v-if="$v.newAccount.username.$error && !$v.newAccount.username.email">Invalid email format!</p>
                 </div>
                 <div class="stacked-label">
-                    <input type="number" class="full-width" :disabled="isProcessing" v-model="newAccount.noOfClinics">
+                    <input type="number" class="full-width" :disabled="isProcessing" v-model="newAccount.noOfClinic" @keypress="isNumber(event)">
                     <label>Number Of Clinics</label>
-                    <p class="error-msg" v-if="$v.newAccount.noOfClinics.$error && !$v.newAccount.noOfClinics.required">Number Of Clinics is required!</p>
+                    <p class="error-msg" v-if="$v.newAccount.noOfClinic.$error && !$v.newAccount.noOfClinic.required">Number Of Clinics is required!</p>
+                    <p class="error-msg" v-if="$v.newAccount.noOfClinic.$error && !$v.newAccount.noOfClinic.numeric">Number Of Clinics is not a number!</p>
                 </div>
             </form>
         </modal-component>
     
-        <modal-component ref="editAccountModal" modalHeader="Edit Account" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onSubmit="editAccount()" :disableButtons="isProcessing" :showSpinner="isProcessing">
+        <modal-component ref="editAccountModal" modalHeader="Edit Account" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onSubmit="editAccount()" :disableButtons="isProcessing" :showButtonSpinner="isProcessing">
             <form>
                 <div class="stacked-label">
                     <input type="email" class="full-width" :disabled="true" v-model="account.username">
                     <label class="input-label-error">Username</label>
                 </div>
-                <q-select type="radio" class="lovs full-width" :disable="true" v-model="account.role" label="Role" :options="role"></q-select>
-                <q-select type="radio" class="lovs full-width" :disable="isProcessing" v-model="account.status" label="Status" :options="status"></q-select>
+                <div class="full-width">
+                    <q-select type="radio" class="full-width" :disable="true" v-model="account.role" label="Role" :options="role"></q-select>
+                </div>
+                <div class="full-width">
+                    <q-select type="radio" class="full-width" :disable="isProcessing" v-model="account.status" label="Status" :options="status"></q-select>
+                </div>
             </form>
         </modal-component>
     
-        <modal-component ref="resetPasswordModal" modalHeader="Reset Password" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onSubmit="resetPassword()" :disableButtons="isProcessing" :showSpinner="isProcessing">
+        <modal-component ref="addNoOfClinicModal" modalHeader="Add Number of clinics" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onSubmit="updateNoOfClinic()" :disableButtons="isProcessing" :showButtonSpinner="isProcessing" :showSpinner="isModalLoading">
+            <p>Current Number of Clinics: {{ noOfOwnedClinic }}</p>
+            <form>
+                <div class="stacked-label">
+                    <input type="number" class="full-width" :disabled="isProcessing" v-model="noOfClinic" @keypress="isNumber(event)">
+                    <label>Additional Number Of Clinics</label>
+                    <p class="error-msg" v-if="$v.noOfClinic.$error && !$v.noOfClinic.required">Additional Number Of Clinics is required!</p>
+                    <p class="error-msg" v-if="$v.noOfClinic.$error && !$v.noOfClinic.numeric">Additional Number Of Clinics is not a number!</p>
+                </div>
+            </form>
+        </modal-component>
+    
+        <modal-component ref="resetPasswordModal" modalHeader="Reset Password" :closeOnEscape="true" :closeOnOutsideClick="true" :showCloseButton="true" @onSubmit="resetPassword()" :disableButtons="isProcessing" :showButtonSpinner="isProcessing">
             <p>Reset Password of {{ account.username }}?</p>
         </modal-component>
     </page-content>
@@ -74,14 +94,10 @@
         text-align: center;
     }
 }
-
-.test {
-    display:inline-block;
-}
 </style>
 
 <script>
-import { required, email } from 'vuelidate/lib/validators'
+import { email, numeric, required } from 'vuelidate/lib/validators'
 import { Toast } from 'quasar'
 import { mapGetters } from 'vuex'
 
@@ -161,32 +177,45 @@ export default {
             isProcessing: false,
             newAccount: {
                 username: '',
-                role: 2,
-                noOfClinics: null
+                role: 1,
+                noOfClinic: ''
             },
             selectedAccount: null,
             account: {
-                userId: null,
+                userId: 0,
                 username: '',
-                role: null,
-                status: null
+                role: 0,
+                status: 0
             },
             accounts: [],
             isAccountListLoaded: false,
             role: CONSTANTS.LOVS.role,
-            status: CONSTANTS.LOVS.status
+            status: Object.assign([], CONSTANTS.LOVS.status),
+            isModalLoading: false,
+            noOfClinic: '',
+            noOfOwnedClinic: 0
         }
     },
     validations: {
         newAccount: {
             username: { required, email },
-            noOfClinics: { required }
-        }
+            noOfClinic: { required, numeric }
+        },
+        noOfClinic: { required, numeric }
     },
     computed: {
         ...mapGetters(['getIsAccountsLoaded', 'getAccounts'])
     },
     methods: {
+        isNumber(evt) {
+            evt = (evt) ? evt : window.event
+            var charCode = (evt.which) ? evt.which : evt.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                evt.preventDefault()
+            } else {
+                return true
+            }
+        },
         createAccount() {
             this.$v.newAccount.$touch();
             if (!this.$v.newAccount.$error) {
@@ -209,8 +238,8 @@ export default {
         clearNewAccountObject() {
             this.newAccount = {
                 username: '',
-                role: 2,
-                noOfClinics: null
+                role: 1,
+                noOfClinic: ''
             }
             this.$v.newAccount.$reset()
         },
@@ -230,7 +259,11 @@ export default {
         editAccount() {
             this.isProcessing = true
             this.isAccountListLoaded = false
-            HTTP.put(CONFIG.API.users, this.account).then(response => {
+            const payload = {
+                userId: this.account.userId,
+                status: this.account.status
+            }
+            HTTP.put(CONFIG.API.changeStatus, payload).then(response => {
                 if (response) {
                     this.$refs.editAccountModal.close()
                     this.accounts[this.selectedAccount.index] = this.account
@@ -250,6 +283,29 @@ export default {
             this.clearSelectedAccountObject()
             this.getSelectedAccountInfo(account)
             this.$refs.editAccountModal.open()
+        },
+        updateNoOfClinic() {
+            this.$v.noOfClinic.$touch();
+            console.log('updateNoOfClinics')
+        },
+        clearNoOfClinics() {
+            this.$v.noOfClinic.$reset()
+            this.noOfOwnedClinic = 0
+            this.noOfClinic = ''
+        },
+        openAddNoOfClinicModal(account) {
+            this.getSelectedAccountInfo(account)
+            this.clearNoOfClinics()
+            this.isModalLoading = true
+            this.$refs.addNoOfClinicModal.open()
+            HTTP.get(CONFIG.API.getNoOfClinics, [this.account.userId]).then(response => {
+                if (response) {
+                    this.noOfOwnedClinic = response.result ? response.result : 0
+                }
+                this.isModalLoading = false
+            }).catch(error => {
+                this.isModalLoading = false
+            })
         },
         resetPassword() {
             this.isProcessing = true
@@ -290,6 +346,11 @@ export default {
         getSelectedAccountInfo(account) {
             this.selectedAccount = account.rows[0]
             Object.assign(this.account, this.selectedAccount.data)
+            this.status = Object.assign([], CONSTANTS.LOVS.status)
+
+            if (this.account.role === 2) {
+                this.status.splice(4, 1)
+            }
         }
     }
 }

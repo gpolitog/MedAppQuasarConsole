@@ -5,6 +5,10 @@
 // 2. or, use next line to activate DEFAULT QUASAR STYLE
 require(`quasar/dist/quasar.${__THEME}.css`)
 // ==============================
+require('../node_modules/chart.js/dist/Chart.bundle.min.js')
+require('../node_modules/hchs-vue-charts/dist/vue-charts.js')
+require('chart.js');
+require('hchs-vue-charts');
 
 import Vue from 'vue'
 import Quasar from 'quasar'
@@ -17,6 +21,7 @@ import store from './config/store'
 import UTILS from './utils/utils'
 import STORAGE from './utils/storage'
 
+Vue.use(VueCharts);
 Vue.use(Vuelidate)
 Vue.use(Quasar)
 
