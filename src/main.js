@@ -34,11 +34,11 @@ router.beforeEach((to, from, next) => {
       store.dispatch('loggedIn', true)
     } else {
       console.log(to.fullPath + ' not allowed. redirecting to login')
-      next('/')
+      next('/logout')
     }
   } else {
     next()
-    if (to.fullPath === '/logout') {
+    if (to.redirectedFrom === '/logout') {
       store.dispatch('clearStore')
       STORAGE.clear()
     }
@@ -61,13 +61,13 @@ Quasar.start(() => {
     store,
     render: h => h(require('./App')),
     onIdle() {
-      console.log(`auto logged out. console is inactive.`)
-      store.dispatch('loggedIn', false)
+      console.log(`auto logged out. console is inactive`)
       router.go('/')
+      store.dispatch('clearStore')
       STORAGE.clear()
     },
     onActive() {
-      console.log(`console is active`)
+      console.log(`console is active. will auto logout in 2mins`)
     }
   })
 })

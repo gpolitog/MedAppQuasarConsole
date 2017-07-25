@@ -9,7 +9,7 @@
             <q-drawer-link icon="system_update" to="/notifications">Notifications</q-drawer-link>
         </div>
         <div>
-            <q-drawer-link icon="power_settings_new" to="/">Log Out</q-drawer-link>
+            <q-drawer-link icon="power_settings_new" to="/logout">Log Out</q-drawer-link>
         </div>
     </q-drawer>
 </template>
