@@ -26,6 +26,10 @@ export default new VueRouter({
       redirect: '/login'
     },
     {
+      path: '/logout',
+      redirect: '/login'
+    },
+    {
       path: '/login',
       meta: {
         name: 'Login'

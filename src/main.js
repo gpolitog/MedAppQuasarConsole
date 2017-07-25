@@ -30,14 +30,18 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth) {
     if (UTILS.isLoggedIn()) {
       console.log(to.fullPath + ' allowed. redirecting..')
-      store.dispatch('loggedIn', true)
       next()
+      store.dispatch('loggedIn', true)
     } else {
       console.log(to.fullPath + ' not allowed. redirecting to login')
       next('/')
     }
   } else {
     next()
+    if (to.fullPath === '/logout') {
+      store.dispatch('clearStore')
+      STORAGE.clear()
+    }
   }
 })
 

@@ -64,6 +64,9 @@ export default {
     cardPanel,
     pageContent
   },
+  created() {
+    this.$store.dispatch('loggedIn', false)
+  },
   data: () => {
     return {
       loginForm: {

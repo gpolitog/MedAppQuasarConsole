@@ -8,7 +8,7 @@
             <q-drawer-link icon="location_city" to="/affiliates">Manage Affiliates</q-drawer-link>
             <q-drawer-link icon="system_update" to="/notifications">Notifications</q-drawer-link>
         </div>
-        <div @click.capture="logout()">
+        <div>
             <q-drawer-link icon="power_settings_new" to="/">Log Out</q-drawer-link>
         </div>
     </q-drawer>
@@ -22,12 +22,6 @@ export default {
     name: 'mainNav',
     computed: {
         ...mapGetters(['getIsLoggedIn'])
-    },
-    methods: {
-        logout() {
-            this.$store.dispatch('clearStore')
-            STORAGE.clear()
-        }
     }
 }
 </script>
