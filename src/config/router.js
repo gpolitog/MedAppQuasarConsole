@@ -3,10 +3,11 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-// FOR LAZY LOADING
-// function load(component) {
-//   return () => System.import(`components/${component}.vue`)
-// }
+function view(name) {
+  return function (resolve) {
+    require(['components/views/' + name + '.vue'], resolve);
+  }
+};
 
 export default new VueRouter({
   /*
@@ -34,10 +35,7 @@ export default new VueRouter({
       meta: {
         name: 'Login'
       },
-      // component: load('views/Login'),
-      component: function (resolve) {
-        require(['components/views/Login.vue'], resolve)
-      }
+      component: view('Login')
     },
     {
       path: '/dashboard',
@@ -45,10 +43,7 @@ export default new VueRouter({
         name: 'Dashboard',
         requiresAuth: true
       },
-      // component: load('views/Dashboard'),
-      component: function (resolve) {
-        require(['components/views/Dashboard.vue'], resolve)
-      }
+      component: view('Dashboard')
     },
     {
       path: '/accounts',
@@ -56,10 +51,7 @@ export default new VueRouter({
         name: 'Accounts',
         requiresAuth: true
       },
-      // component: load('views/Accounts'),
-      component: function (resolve) {
-        require(['components/views/Accounts.vue'], resolve)
-      }
+      component: view('Accounts')
     },
     {
       path: '/affiliates',
@@ -67,10 +59,7 @@ export default new VueRouter({
         name: 'Affiliates',
         requiresAuth: true
       },
-      // component: load('views/Affiliates'),
-      component: function (resolve) {
-        require(['components/views/Affiliates.vue'], resolve)
-      }
+      component: view('Affiliates')
     },
     {
       path: '/notifications',
@@ -78,10 +67,7 @@ export default new VueRouter({
         name: 'Notifications',
         requiresAuth: true
       },
-      // component: load('views/Notifications'),
-      component: function (resolve) {
-        require(['components/views/Notifications.vue'], resolve)
-      }
+      component: view('Notifications')
     },
     {
       path: '/changePassword',
@@ -89,17 +75,11 @@ export default new VueRouter({
         name: 'Change Password',
         requiresAuth: true
       },
-      // component: load('views/ChangePassword'),
-      component: function (resolve) {
-        require(['components/views/ChangePassword.vue'], resolve)
-      }
+      component: view('ChangePassword')
     },
     {
       path: '*',
-      // component: load('Error404')
-      component: function (resolve) {
-        require(['components/Error404.vue'], resolve)
-      }
+      component: view('Error404')
     }
   ]
 })
