@@ -3,6 +3,7 @@
     <q-layout>
       <main-header slot="header"></main-header>
       <main-nav></main-nav>
+      <settings-nav></settings-nav>
       <div class="layout-view">
         <transition name="fade" mode="out-in">
           <router-view></router-view>
@@ -40,6 +41,8 @@ body {
 <script>
 import mainHeader from './components/components/MainHeader.vue'
 import mainNav from './components/components/MainNav.vue'
+import settingsNav from './components/components/SettingsNav.vue'
+
 import { mapGetters } from 'vuex'
 export default {
   name: 'app',
@@ -48,7 +51,8 @@ export default {
   },
   components: {
     mainHeader,
-    mainNav
+    mainNav,
+    settingsNav
   }
 }
 </script>

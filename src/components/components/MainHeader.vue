@@ -6,6 +6,9 @@
         <q-toolbar-title :padding="1">
             Admin Console
         </q-toolbar-title>
+        <button @click="settingsNav.open()">
+            <i>settings</i>
+        </button>
     </div>
 </template>
 
@@ -17,6 +20,9 @@ export default {
         ...mapGetters(['getIsLoggedIn']),
         mainNav() {
             return this.$parent.$children[1].$refs.mainNavRef
+        },
+        settingsNav() {
+            return this.$parent.$children[2].$refs.settingsNavRef
         }
     }
 }

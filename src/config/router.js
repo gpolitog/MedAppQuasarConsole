@@ -34,7 +34,6 @@ export default new VueRouter({
       meta: {
         name: 'Login'
       },
-      // FOR LAZY LOADING
       // component: load('views/Login'),
       component: function (resolve) {
         require(['components/views/Login.vue'], resolve)
@@ -46,7 +45,6 @@ export default new VueRouter({
         name: 'Dashboard',
         requiresAuth: true
       },
-      // FOR LAZY LOADING
       // component: load('views/Dashboard'),
       component: function (resolve) {
         require(['components/views/Dashboard.vue'], resolve)
@@ -58,7 +56,6 @@ export default new VueRouter({
         name: 'Accounts',
         requiresAuth: true
       },
-      // FOR LAZY LOADING
       // component: load('views/Accounts'),
       component: function (resolve) {
         require(['components/views/Accounts.vue'], resolve)
@@ -70,7 +67,6 @@ export default new VueRouter({
         name: 'Affiliates',
         requiresAuth: true
       },
-      // FOR LAZY LOADING
       // component: load('views/Affiliates'),
       component: function (resolve) {
         require(['components/views/Affiliates.vue'], resolve)
@@ -82,15 +78,24 @@ export default new VueRouter({
         name: 'Notifications',
         requiresAuth: true
       },
-      // FOR LAZY LOADING
       // component: load('views/Notifications'),
       component: function (resolve) {
         require(['components/views/Notifications.vue'], resolve)
       }
     },
     {
+      path: '/changePassword',
+      meta: {
+        name: 'Change Password',
+        requiresAuth: true
+      },
+      // component: load('views/ChangePassword'),
+      component: function (resolve) {
+        require(['components/views/ChangePassword.vue'], resolve)
+      }
+    },
+    {
       path: '*',
-      // FOR LAZY LOADING
       // component: load('Error404')
       component: function (resolve) {
         require(['components/Error404.vue'], resolve)
