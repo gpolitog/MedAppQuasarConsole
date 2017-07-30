@@ -2,6 +2,7 @@ export default {
   API: {
     affiliates: `/affiliates`,
     authenticate: `/users/authenticate`,
+    changePassword: '/users/changepass',
     changeStatus: `/users/changestatus`,
     clinics: `/clinicdetails`,
     createNotification: `/pushnotif/cr`,
