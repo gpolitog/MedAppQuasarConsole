@@ -97,7 +97,7 @@ export default {
             HTTP.get(CONFIG.API.affiliates, []),
             HTTP.get(CONFIG.API.clinics, [])
         ]).then(response => {
-            if (respons) {
+            if (response) {
                 const affiliatesResponse = response[0];
                 const clinicsResponse = response[1];
 
@@ -199,6 +199,7 @@ export default {
         },
         sendNotification() {
             this.$v.msg.$touch()
+            this.filters = []
             if (this.isTagsValid() && !this.$v.msg.$error) {
                 this.isProcessing = true
                 const payload = {
