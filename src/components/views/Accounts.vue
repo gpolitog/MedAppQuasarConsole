@@ -297,12 +297,12 @@ export default {
 
             if (!this.$v.noOfClinic.$error) {
                 this.isProcessing = true
-                console.log(this.account)
-                HTTP.put(CONFIG.API.updateNoOfClinics + `/${this.noOfClinic}/u/${this.account.userId}`, {}).then(response => {
+                const newNoOfClinics = parseInt(this.noOfOwnedClinic) + parseInt(this.noOfClinic)
+                HTTP.put(CONFIG.API.updateNoOfClinics + `/${newNoOfClinics}/u/${this.account.userId}`, {}).then(response => {
                     if (response) {
-                        this.$refs.editAccountModal.close()
+                        this.$refs.addNoOfClinicModal.close()
                         Toast.create.positive({
-                            html: `Succesfully addedd ${this.noOfClinic} to ${this.account.username}`
+                            html: `Succesfully addedd ${this.noOfClinic} clinics to ${this.account.username}`
                         })
                     }
                     this.isProcessing = false
