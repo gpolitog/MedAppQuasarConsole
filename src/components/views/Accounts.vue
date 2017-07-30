@@ -294,7 +294,22 @@ export default {
         },
         updateNoOfClinic() {
             this.$v.noOfClinic.$touch();
-            console.log('updateNoOfClinics')
+
+            if (!this.$v.noOfClinic.$error) {
+                this.isProcessing = true
+                console.log(this.account)
+                HTTP.put(CONFIG.API.updateNoOfClinics + `/${this.noOfClinic}/u/${this.account.userId}`, {}).then(response => {
+                    if (response) {
+                        this.$refs.editAccountModal.close()
+                        Toast.create.positive({
+                            html: `Succesfully addedd ${this.noOfClinic} to ${this.account.username}`
+                        })
+                    }
+                    this.isProcessing = false
+                }).catch(error => {
+                    this.isProcessing = false
+                })
+            }
         },
         clearNoOfClinics() {
             this.$v.noOfClinic.$reset()
