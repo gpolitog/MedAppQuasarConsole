@@ -5,7 +5,7 @@ export default {
     changeStatus: `/users/changestatus`,
     clinics: `/clinicdetails`,
     createNotification: `/pushnotif/cr`,
-    getActiveUserCount: `/users/tc/a`,
+    getActiveUserCount: `/users/tc/acu`,
     getInactiveUserCount: `/users/tc/inacu`,
     getIncompleteUserCount: `/users/tc/incregu`,
     getCountAllAffiliates: `/affiliates/tc/a`,

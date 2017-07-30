@@ -97,15 +97,17 @@ export default {
             HTTP.get(CONFIG.API.affiliates, []),
             HTTP.get(CONFIG.API.clinics, [])
         ]).then(response => {
-            const affiliatesResponse = response[0];
-            const clinicsResponse = response[1];
+            if (respons) {
+                const affiliatesResponse = response[0];
+                const clinicsResponse = response[1];
 
-            if (affiliatesResponse) {
-                this.setAffiliates(affiliatesResponse.result)
-            }
+                if (affiliatesResponse) {
+                    this.setAffiliates(affiliatesResponse.result)
+                }
 
-            if (clinicsResponse) {
-                this.setClinics(clinicsResponse.result)
+                if (clinicsResponse) {
+                    this.setClinics(clinicsResponse.result)
+                }
             }
 
             this.isAffiliateListLoaded = true
