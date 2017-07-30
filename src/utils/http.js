@@ -98,15 +98,6 @@ class HttpService {
     this.setAuthorizationHeader()
     return HTTP.put(url, parameter)
   }
-
-  errorHandler(e) {
-    Dialog.create({
-      message: e,
-      buttons: [
-        'OK'
-      ]
-    })
-  }
 }
 
 export default new HttpService()

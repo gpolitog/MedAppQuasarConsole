@@ -1,12 +1,13 @@
 export default {
   API: {
-    authenticate: `/users/authenticate`,
     affiliates: `/affiliates`,
-    users: `/users`,
+    authenticate: `/users/authenticate`,
     changeStatus: `/users/changestatus`,
-    resetPassword: `/users/passwdres`,
+    clinics: `/clinicdetails`,
+    createNotification: `/pushnotif/cr`,
     getNoOfClinics: '/doctordetails/clinics',
-    createNotification: `/pushnotif/cr`
+    resetPassword: `/users/passwdres`,
+    users: `/users`
   },
   STORAGE: {
     token: `kento`

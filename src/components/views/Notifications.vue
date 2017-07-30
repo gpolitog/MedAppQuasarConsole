@@ -7,7 +7,7 @@
                 <br> Notification tags consist of the following: clinic id, affiliaton id, and user role.
             </card-panel>
     
-            <card-panel sectionHeader="Push Notification" :showSpinner="!isAffiliateListLoaded">
+            <card-panel sectionHeader="Push Notification" :showSpinner="!isAffiliateListLoaded && !isClinicListLoaded">
                 Toggle the notification tag to allow usage.
                 <br>
                 <br>
@@ -28,14 +28,14 @@
                         <tbody>
                             <tr v-for="tag in tags">
                                 <td data-th="Use Tag">
-                                    <q-toggle v-model="tag.used" :disable="tag.key === 'clinicId' || isProcessing" @input="toggleTag(tag)"></q-toggle>
+                                    <q-toggle v-model="tag.used" :disable="isProcessing" @input="toggleTag(tag)"></q-toggle>
                                 </td>
-                                <!-- <td data-th="Notification Tag">
-                                    {{ tag.key }}
-                                </td> -->
                                 <td data-th="Send To">
                                     <div v-if="tag.key === 'clinicId'">
-                                        ON GOING DEVELOPMENT
+                                        <div class="full-width">
+                                            <q-select type="radio" class="full-width" v-model="tag.value" label="Clinics" :options="clinics" :disable="!tag.used || isProcessing" @input="selectClinic(tag.value)"></q-select>
+                                            <span class="error-msg" v-if="clinicTagHasError">Clinics is required!</span>
+                                        </div>
                                     </div>
                                     <div v-if="tag.key === 'affilliationId'">
                                         <div class="full-width">
@@ -76,6 +76,7 @@
 </style>
 
 <script>
+import axios from 'axios'
 import { required } from 'vuelidate/lib/validators'
 import { Toast } from 'quasar'
 
@@ -92,14 +93,26 @@ export default {
         pageContent
     },
     created() {
-        HTTP.get(CONFIG.API.affiliates, []).then(response => {
-            if (response) {
-                this.setAffiliates(response.result)
+        axios.all([
+            HTTP.get(CONFIG.API.affiliates, []),
+            HTTP.get(CONFIG.API.clinics, [])
+        ]).then(response => {
+            const affiliatesResponse = response[0];
+            const clinicsResponse = response[1];
+
+            if (affiliatesResponse) {
+                this.setAffiliates(affiliatesResponse.result)
             }
+
+            if (clinicsResponse) {
+                this.setClinics(clinicsResponse.result)
+            }
+
             this.isAffiliateListLoaded = true
+            this.isClinicListLoaded = true
         }).catch(error => {
-            this.affiliates = []
             this.isAffiliateListLoaded = true
+            this.isClinicListLoaded = true
         })
     },
     data() {
@@ -131,6 +144,8 @@ export default {
             role: CONSTANTS.LOVS.role,
             affiliates: [],
             isAffiliateListLoaded: false,
+            clinics: [],
+            isClinicListLoaded: false,
             isProcessing: false,
             clinicTagHasError: false,
             affiliateTagHasError: false,
@@ -148,6 +163,15 @@ export default {
                 this.affiliates.push({
                     label: affiliate.affiliateName,
                     value: affiliate.id
+                })
+            })
+        },
+        setClinics(clinics) {
+            const tempClinics = clinics ? clinics : []
+            tempClinics.forEach(clinic => {
+                this.clinics.push({
+                    label: clinic.clinicName,
+                    value: clinic.clinicId
                 })
             })
         },
