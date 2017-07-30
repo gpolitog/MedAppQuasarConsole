@@ -35,7 +35,7 @@
                 <form>
                     <div class="stacked-label">
                         <input class="full-width" :disabled="isProcessing" v-model.trim="newAffiliate.affiliateName">
-                        <label class="input-label-error">Affiliate Name</label>
+                        <label>Affiliate Name</label>
                         <p class="error-msg" v-if="$v.newAffiliate.affiliateName.$error && !$v.newAffiliate.affiliateName.required">Affiliate Name is required!</p>
                     </div>
                     <div class="stacked-label">
@@ -50,7 +50,7 @@
                 <form>
                     <div class="stacked-label">
                         <input class="full-width" :disabled="isProcessing" v-model.trim="affiliate.affiliateName">
-                        <label class="input-label-error">Affiliate Name</label>
+                        <label>Affiliate Name</label>
                         <p class="error-msg" v-if="$v.affiliate.affiliateName.$error && !$v.affiliate.affiliateName.required">Affiliate Name is required!</p>
                     </div>
                     <div class="stacked-label">

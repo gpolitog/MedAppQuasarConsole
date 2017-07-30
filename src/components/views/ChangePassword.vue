@@ -1,22 +1,30 @@
 <template>
-    <page-content :centerAligned="false">
-        <div class="sm-width-4of5 md-width-4of5 gt-md-width-4of5">
+    <page-content :centerAligned="true">
+        <div class="sm-width-4of5 md-width-2of5 gt-md-width-2of5">
             <card-panel sectionHeader="Change Password">
-                ON GOING DEVELOPMENT
+                <form>
+                    <div class="stacked-label">
+                        <input type="email" class="full-width" :disabled="isProcessing" v-model.trim="changePassword.oldPassword">
+                        <label>Old Password</label>
+                    </div>
+                    <div class="stacked-label">
+                        <input type="number" class="full-width" :disabled="isProcessing" v-model.trim="changePassword.newPassword">
+                        <label>New Password</label>
+                    </div>
+                    <div class="stacked-label">
+                        <input type="number" class="full-width" :disabled="isProcessing" v-model.trim="changePassword.confirmPassword">
+                        <label>Confirm Password</label>
+                    </div>
+                    <div class="button-container centered">
+                        <button class="primary round" @click.prevent="openCreateAccountModal()">
+                            Create Account
+                        </button>
+                    </div>
+                </form>
             </card-panel>
         </div>
     </page-content>
 </template>
-
-<style scoped lang="stylus">
-@import '~src/themes/app.variables.styl';
-
-@media (max-width: $max-width-sm) {
-    .button-centered {
-        text-align: center;
-    }
-}
-</style>
 
 <script>
 import { required } from 'vuelidate/lib/validators'
@@ -35,6 +43,15 @@ export default {
         cardPanel,
         modalComponent,
         pageContent
+    },
+    data() {
+        return {
+            changePassword: {
+                oldPassword: '',
+                newPassword: '',
+                confirmPassword: ''
+            }
+        }
     }
 }
 </script>

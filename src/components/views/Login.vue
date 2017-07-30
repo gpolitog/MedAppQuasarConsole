@@ -11,7 +11,7 @@
         <form novalidate>
           <div class="stacked-label">
             <input class="full-width" :disabled="isProcessing" v-model.trim="loginForm.username">
-            <label class="error">Username</label>
+            <label>Username</label>
             <span class="error-msg" v-if="$v.loginForm.username.$error && !$v.loginForm.username.required">Username is required!</span>
           </div>
           <div class="stacked-label">

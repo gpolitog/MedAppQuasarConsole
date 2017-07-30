@@ -48,7 +48,7 @@
             <form>
                 <div class="stacked-label">
                     <input type="email" class="full-width" :disabled="isProcessing" v-model.trim="newAccount.username">
-                    <label class="input-label-error">Username</label>
+                    <label>Username</label>
                     <p class="error-msg" v-if="$v.newAccount.username.$error && !$v.newAccount.username.required">Username is required!</p>
                     <p class="error-msg" v-if="$v.newAccount.username.$error && !$v.newAccount.username.email">Invalid email format!</p>
                 </div>
@@ -65,7 +65,7 @@
             <form>
                 <div class="stacked-label">
                     <input type="email" class="full-width" :disabled="true" v-model="account.username">
-                    <label class="input-label-error">Username</label>
+                    <label>Username</label>
                 </div>
                 <div class="full-width">
                     <q-select type="radio" class="full-width" :disable="true" v-model="account.role" label="Role" :options="role"></q-select>
