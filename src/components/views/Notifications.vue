@@ -206,7 +206,9 @@ export default {
                     contents: {
                         en: this.msg
                     },
-                    filters: this.filters
+                    filters: this.filters,
+                    android_group: 'mdcon-notifs',
+                    android_group_message: { "en": 'You have $[notif_count] new notifications' }
                 }
 
                 HTTP.post(CONFIG.API.createNotification, payload).then(response => {
