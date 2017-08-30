@@ -20,6 +20,7 @@
     "idle-vue": "^2.0.1",
     "material-design-icons": "^3.0.1",
     "moment": "^2.15.0",
+    "quasar-cli": "^0.6.4",
     "quasar-framework": "^0.13.10",
     "roboto-fontface": "^0.7.0",
     "vue": "^2.3.0",
