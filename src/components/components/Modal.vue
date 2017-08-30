@@ -42,22 +42,6 @@
     padding: 15px 0;
 }
 
-
-
-
-
-/*.body-small {
-    min-width: 20vw;
-}
-
-.body-medium {
-    min-width: 40vw;
-}
-
-.body-large {
-    min-width: 80vw;
-}*/
-
 .modal-actions {
     min-width: 80px;
 }

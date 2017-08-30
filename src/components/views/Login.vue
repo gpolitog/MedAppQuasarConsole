@@ -27,7 +27,7 @@
           </div>
         </form>
       </card-panel>
-  
+
     </div>
   </page-content>
 </template>
@@ -51,7 +51,7 @@ form {
 
 <script>
 import { required } from 'vuelidate/lib/validators'
-
+import { Dialog } from 'quasar'
 import cardPanel from '../components/CardPanel.vue'
 import pageContent from '../components/PageContent.vue'
 
@@ -83,9 +83,22 @@ export default {
         this.isProcessing = true
         HTTP.post(CONFIG.API.authenticate, this.loginForm).then(response => {
           if (response) {
-            STORAGE.put(CONFIG.STORAGE.token, response.result.token)
-            this.$store.dispatch('loggedIn', true)
-            this.$router.push('/dashboard')
+            const result = response.result;
+            if (result && result.principal && result.principal.role === 0) {
+              STORAGE.put(CONFIG.STORAGE.token, response.result.token)
+              this.$store.dispatch('loggedIn', true)
+              this.$router.push('/dashboard')
+            }
+            else {
+              Dialog.create({
+                message: 'Username not Found!',
+                buttons: [
+                  'OK'
+                ],
+                noBackdropDismiss: true,
+                noEscDismiss: true
+              })
+            }
           }
           this.isProcessing = false
         }).catch(error => {

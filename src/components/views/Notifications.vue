@@ -6,7 +6,7 @@
                 <br>
                 <br> Notification tags consist of the following: clinic id, affiliaton id, and user role.
             </card-panel>
-    
+
             <card-panel sectionHeader="Push Notification" :showSpinner="!isAffiliateListLoaded && !isClinicListLoaded">
                 Toggle the notification tag to allow usage.
                 <br>
